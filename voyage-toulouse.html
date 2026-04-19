@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta property="og:title" content="Toulouse & Carcassonne — Notre Voyage 🌹">
+<meta property="og:description" content="5 jours en amoureux dans le Sud-Ouest — programme jour par jour, restos validés, cartes et infos pratiques.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; frame-src https://www.openstreetmap.org; img-src 'self' data:; connect-src 'none'">
+<meta name="description" content="Notre programme 5 jours à Toulouse et Carcassonne — itinéraires, restos validés, infos pratiques et hôtel.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🌹</text></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toulouse & Carcassonne — Notre Voyage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Design System — Toulouse & Carcassonne
+   (inline pour fonctionner sans serveur web / GitHub Pages)
+   ============================================================ */
+/* ============================================================
+   TOULOUSE & CARCASSONNE — Shared Design System
+   styles.css · Utilisé par :
+     - toulouse-carcassonne.html
+     - restos-toulouse.html
+     - palette-toulouse.html
+   ============================================================ */
+
+/* ── 1. DESIGN TOKENS ──────────────────────────────────────── */
+:root {
+  /* Couleurs principales — palette coucher de soleil */
+  --brick-pastel:    #F2C4A8;
+  --ocre-sunset:     #E8956A;
+  --brick:           #D4705A;   /* CTA, accents primaires */
+  --brick-hover:     #C4604A;
+  --rose-garonne:    #C45A7A;
+  --violette:        #9B7BAA;
+  --pastel-bleu:     #7B9EBB;
+
+  /* Fonds pastels */
+  --cream:           #FDF5F0;
+  --cream-dark:      #EDE3D3;
+  --peche-pale:      #FAE8DC;
+  --rose-dragee:     #F5D5E2;
+  --lilas-pastel:    #EAD8F0;
+  --ciel-garonne:    #D8EAF5;
+  --sable-ocre:      #F5EAD8;
+
+  /* Textes & fonds sombres */
+  --dark:            #3D1F1A;
+  --medieval:        #4A3728;
+  --bordeaux:        #6B3A40;
+  --stone:           #8B7355;
+  --text:            #3D2B1F;
+  --text-muted:      #B87A6A;
+  --gold:            #D4A853;
+  --gold-light:      #E8C4A8;
+  --transport:       #6B8E9F;
+
+  /* Typography */
+  --font-display:    'Playfair Display', serif;
+  --font-body:       'DM Sans', sans-serif;
+  --font-italic:     'Cormorant Garamond', serif;
+
+  /* Spacing */
+  --container-max:   860px;
+  --section-pad:     48px;
+
+  /* Shadows */
+  --shadow-card:     0 2px 12px rgba(44, 24, 16, 0.06);
+  --shadow-hover:    0 8px 32px rgba(44, 24, 16, 0.12);
+  --shadow-map:      0 8px 40px rgba(44, 24, 16, 0.15);
+
+  /* Radius */
+  --radius-sm:       2px;
+  --radius:          4px;
+  --radius-lg:       8px;
+}
+
+/* ── 2. RESET & BASE ────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 3. TYPOGRAPHY UTILITIES ────────────────────────────────── */
+.font-display   { font-family: var(--font-display); }
+.font-italic    { font-family: var(--font-italic); font-style: italic; }
+
+.text-tag {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.text-label-sm {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ── 4. LAYOUT UTILITIES ────────────────────────────────────── */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.container--wide {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.map-wrap {
+  max-width: var(--container-max);
+  margin: 0 auto var(--section-pad);
+}
+
+/* ── 5. LINK UTILITIES ──────────────────────────────────────── */
+/* Clickable place/resto names inline */
+.link-place {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(196, 82, 42, 0.3);
+  transition: border-color 0.2s;
+}
+.link-place:hover {
+  border-color: var(--brick);
+}
+
+/* Google Maps CTA button */
+.btn-maps {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--brick);
+  color: white;
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border-radius: var(--radius);
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.btn-maps:hover { background: var(--brick-hover); }
+.btn-maps--phone { background: var(--pastel-bleu); }
+.btn-maps--reserve { background: transparent; border: 1px solid var(--brick); color: var(--brick); }
+
+/* ── 6. CARD SYSTEM ─────────────────────────────────────────── */
+.card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  border-left: 3px solid var(--cream-dark);
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateX(4px);
+}
+.card--brick     { border-left-color: var(--brick); }
+.card--gold      { border-left-color: var(--gold); }
+.card--stone     { border-left-color: var(--stone); }
+.card--transport { border-left-color: var(--transport); }
+
+.card__type {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.card__type--brick     { color: var(--brick); }
+.card__type--gold      { color: var(--gold); }
+.card__type--stone     { color: var(--stone); }
+.card__type--transport { color: var(--transport); }
+
+.card__title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.card__desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.card__meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.card__meta-item {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Alternatives box inside card (e.g. 3 options Carcassonne) */
+.card__alternatives {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--cream);
+  border-radius: var(--radius);
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--dark);
+}
+.card__alternatives a {
+  color: var(--brick);
+  font-weight: 500;
+  text-decoration: none;
+}
+.card__alternatives a:hover { text-decoration: underline; }
+
+/* ── 7. MAP CONTAINER ───────────────────────────────────────── */
+.map-container {
+  border-radius: var(--radius);
+  overflow: hidden;
+  height: 380px;
+  position: relative;
+  box-shadow: var(--shadow-map);
+}
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+.map-label {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--dark);
+  color: var(--gold-light);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  z-index: 1;
+}
+.map-open-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 1;
+}
+
+/* ── 8. CULTURE BOX ─────────────────────────────────────────── */
+.culture-box {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--medieval) 100%);
+  color: white;
+  padding: 48px;
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+.culture-box::before {
+  content: '📖';
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  font-size: 80px;
+  opacity: 0.1;
+  pointer-events: none;
+}
+.culture-box__tag {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 16px;
+}
+.culture-box h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: white;
+}
+.culture-box p {
+  font-family: var(--font-italic);
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+.culture-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+.culture-fact {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.culture-fact strong {
+  color: var(--gold-light);
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+/* ── 9. STORY DRAWER ────────────────────────────────────────── */
+.story-toggle {
+  background: none;
+  border: 1px solid rgba(196, 82, 42, 0.2);
+  color: var(--brick);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+.story-toggle:hover {
+  background: var(--brick);
+  color: white;
+}
+.story-drawer {
+  background: linear-gradient(to bottom, var(--cream-dark), var(--cream));
+  border: 1px solid rgba(196, 82, 42, 0.15);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-top: 8px;
+  display: none;
+  font-family: var(--font-italic);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--medieval);
+  line-height: 1.8;
+  position: relative;
+}
+.story-drawer.open { display: block; }
+.story-drawer::before {
+  content: '"';
+  font-size: 60px;
+  color: var(--brick);
+  opacity: 0.15;
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  font-style: normal;
+  line-height: 1;
+}
+
+/* ── 10. TRAIN BANNER ───────────────────────────────────────── */
+.train-banner {
+  background: var(--dark);
+  color: white;
+  padding: 20px 32px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.train-banner__label { font-weight: 500; }
+.train-banner__info  { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+.train-banner__badge {
+  margin-left: auto;
+  font-size: 12px;
+  background: rgba(196, 82, 42, 0.3);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--gold-light);
+}
+
+/* ── 11. HERO ───────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(
+    170deg,
+    var(--rose-dragee) 0%,
+    var(--peche-pale)  25%,
+    var(--brick-pastel) 50%,
+    var(--lilas-pastel) 78%,
+    var(--ciel-garonne) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4705A' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.hero h1 span {
+  color: var(--brick);
+  font-style: italic;
+}
+.hero__amp {
+  font-family: var(--font-italic);
+  font-size: clamp(40px, 7vw, 80px);
+  color: rgba(61, 31, 26, 0.2);
+  display: block;
+  margin: 4px 0;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.5s forwards;
+}
+.hero__meta {
+  display: flex;
+  gap: 32px;
+  margin-top: 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.9s forwards;
+}
+.hero__meta-item {
+  text-align: center;
+  color: var(--text-muted);
+}
+.hero__meta-item strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--brick);
+}
+.hero__meta-item span {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.hero__scroll {
+  position: absolute;
+  bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(61, 31, 26, 0.35);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 1.2s forwards;
+}
+.hero__scroll::after {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(61,31,26,0.3), transparent);
+  animation: pulse 2s ease infinite;
+}
+
+/* ── 12. NAVIGATION ─────────────────────────────────────────── */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--dark);
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid rgba(196, 82, 42, 0.3);
+}
+.sticky-nav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  flex-shrink: 0;
+  padding: 14px 20px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: var(--gold-light);
+  border-bottom-color: var(--gold-light);
+}
+
+/* ── 13. DAY SECTIONS ───────────────────────────────────────── */
+.day-section { display: none; min-height: 100vh; }
+.day-section.active { display: block; }
+
+.day-header {
+  padding: 80px 20px 60px;
+  text-align: center;
+  position: relative;
+}
+.day-number {
+  font-family: var(--font-italic);
+  font-size: 120px;
+  font-weight: 300;
+  color: var(--cream-dark);
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  line-height: 1;
+  user-select: none;
+}
+.day-label {
+  position: relative;
+  z-index: 1;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--brick);
+  font-weight: 500;
+  margin-bottom: 12px;
+  margin-top: 40px;
+}
+.day-title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 48px);
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+.day-subtitle {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-italic);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* ── 14. TIMELINE ───────────────────────────────────────────── */
+.timeline {
+  padding: 0 20px 80px;
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+.timeline-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0 24px;
+  margin-bottom: 0;
+  position: relative;
+}
+.timeline-time {
+  text-align: right;
+  padding-top: 24px;
+}
+.timeline-time span {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--brick);
+  letter-spacing: 0.5px;
+}
+.timeline-body {
+  position: relative;
+  padding: 0 0 0 24px;
+  border-left: 2px solid var(--cream-dark);
+}
+.timeline-dot {
+  position: absolute;
+  left: -6px;
+  top: 28px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--brick);
+  border: 2px solid var(--cream);
+}
+.timeline-dot.gold  { background: var(--gold); }
+.timeline-dot.stone { background: var(--stone); }
+
+/* Timeline card = shared .card with overrides */
+.timeline-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  margin: 16px 0;
+  box-shadow: var(--shadow-card);
+  border-left: 3px solid var(--cream-dark);
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.timeline-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateX(4px);
+}
+.timeline-card.highlight { border-left-color: var(--brick); }
+.timeline-card.food      { border-left-color: var(--gold); }
+.timeline-card.culture   { border-left-color: var(--stone); }
+
+.card-type { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; margin-bottom: 6px; }
+.card-type.highlight { color: var(--brick); }
+.card-type.food      { color: var(--gold); }
+.card-type.culture   { color: var(--stone); }
+.card-type.transport { color: var(--transport); }
+.card-title { font-family: var(--font-display); font-size: 18px; color: var(--dark); margin-bottom: 8px; }
+.card-desc  { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
+.card-meta  { display: flex; gap: 16px; flex-wrap: wrap; }
+.card-meta-item { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+
+/* ── 15. OVERVIEW GRID ──────────────────────────────────────── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px;
+  margin-bottom: 2px;
+}
+.overview-card {
+  background: white;
+  padding: 40px 32px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.overview-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--brick);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.overview-card:hover::before  { transform: scaleX(1); }
+.overview-card:hover          { background: var(--cream); }
+.overview-day-num   { font-family: var(--font-italic); font-size: 56px; color: var(--cream-dark); font-weight: 300; line-height: 1; margin-bottom: 8px; }
+.overview-day-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--brick); margin-bottom: 8px; }
+.overview-day-title { font-family: var(--font-display); font-size: 20px; color: var(--dark); margin-bottom: 8px; }
+.overview-day-sub   { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+/* ── 16. BUDGET SECTION ─────────────────────────────────────── */
+.budget-section { background: var(--dark); padding: 48px 20px; margin-top: 2px; }
+.budget-title   { font-family: var(--font-display); font-size: 28px; color: white; text-align: center; margin-bottom: 32px; }
+.budget-grid    { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; max-width: 600px; margin: 0 auto; }
+.budget-item    { text-align: center; padding: 20px; background: rgba(255,255,255,0.05); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); }
+.budget-amount  { font-family: var(--font-display); font-size: 32px; color: var(--gold-light); display: block; }
+.budget-label   { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 4px; display: block; }
+.budget-note    { text-align: center; margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.45); letter-spacing: 1px; }
+
+/* ── 17. TIPS SECTION ───────────────────────────────────────── */
+.tips-section { padding: 60px 20px; background: var(--cream-dark); }
+.tips-title   { font-family: var(--font-display); font-size: 28px; text-align: center; margin-bottom: 32px; color: var(--dark); }
+.tips-grid    { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; }
+.tip-card     { background: white; padding: 24px; border-radius: var(--radius); border-top: 3px solid var(--brick); }
+.tip-icon     { font-size: 24px; margin-bottom: 12px; }
+.tip-card h4  { font-family: var(--font-display); font-size: 16px; margin-bottom: 8px; color: var(--dark); }
+.tip-card p   { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── 18. ANIMATIONS ─────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+/* ── 19. RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .overview-grid { grid-template-columns: 1fr 1fr; }
+  .culture-box   { padding: 28px 20px; margin: 0 12px 32px; }
+  .map-container { height: 280px; margin: 0 12px 32px; }
+  .timeline      { padding: 0 12px 60px; }
+  .timeline-item { grid-template-columns: 64px 1fr; }
+  .hero__meta    { gap: 20px; }
+  .train-banner  { flex-direction: column; gap: 12px; }
+  .train-banner__badge { margin-left: 0; }
+}
+
+@media (max-width: 480px) {
+  .overview-grid { grid-template-columns: 1fr; }
+  .budget-grid   { grid-template-columns: 1fr 1fr; }
+  .tips-grid     { grid-template-columns: 1fr; }
+  .hero__meta    { gap: 16px; }
+  .day-number    { font-size: 80px; }
+}
+
+
+/* ── Styles spécifiques : Guide Restos ── */
+/* ── Styles spécifiques restos-toulouse.html ── */
+.hero { min-height: auto; padding: 60px 24px 48px; }
+.hero__tag { opacity: 1; animation: none; }
+.hero h1   { opacity: 1; animation: none; font-size: clamp(36px,8vw,72px); }
+.hero__sub { opacity: 1; animation: none; font-size: 20px; }
+
+.hero-badges { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:28px; }
+.badge { background:white; border-radius:20px; padding:7px 14px; font-size:11px; color:var(--bordeaux); font-weight:500; box-shadow:0 2px 8px rgba(61,31,26,0.08); }
+
+.intro { max-width:680px; margin:48px auto; padding:0 24px; text-align:center; }
+.intro p { font-family:var(--font-italic); font-size:19px; font-style:italic; color:var(--bordeaux); line-height:1.8; }
+
+.cards { max-width:900px; margin:0 auto; padding:0 20px 80px; display:flex; flex-direction:column; gap:2px; }
+
+.resto-card { background:white; overflow:hidden; position:relative; }
+.resto-card:first-child { border-radius:8px 8px 0 0; }
+.resto-card:last-child  { border-radius:0 0 8px 8px; }
+
+.card-inner { display:grid; grid-template-columns:5px 1fr; }
+.card-accent { width:5px; flex-shrink:0; }
+.card-body { padding:32px 28px; }
+
+.card-num {
+  font-family:var(--font-italic); font-size:56px; font-style:italic;
+  color:var(--cream-dark); font-weight:300; line-height:1;
+  position:absolute; top:16px; right:24px; user-select:none;
+}
+
+.card-labels { display:flex; flex-direction:column; gap:6px; }
+.card-category { font-size:10px; letter-spacing:3px; text-transform:uppercase; font-weight:500; }
+.card-name { font-family:var(--font-display); font-size:clamp(22px,4vw,30px); color:var(--dark); line-height:1.1; }
+
+.stars { font-size:13px; color:#D4A020; letter-spacing:1px; }
+.divider { height:2px; background:linear-gradient(to right,transparent,var(--cream-dark),transparent); margin:8px 0; }
+
+.card-desc { font-family:var(--font-italic); font-size:18px; font-style:italic; color:var(--bordeaux); line-height:1.7; margin-bottom:20px; }
+
+.card-meta-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:20px; }
+.meta-item { background:var(--cream); border-radius:var(--radius); padding:10px 12px; }
+.meta-label { font-size: 11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); display:block; margin-bottom:3px; }
+.meta-val { font-size:13px; font-weight:500; color:var(--dark); }
+
+.card-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.tag { font-size:11px; padding:4px 12px; border-radius:20px; font-weight:500; }
+
+.verdict-box { border-radius:var(--radius); padding:14px 16px; font-size:13px; line-height:1.6; color:var(--dark); }
+.verdict-label { font-size: 11px; letter-spacing:2px; text-transform:uppercase; font-weight:500; margin-bottom:4px; display:block; }
+
+.card-footer { display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; }
+
+.tips-section { background:var(--dark); padding:48px 24px; }
+.tips-inner { max-width:860px; margin:0 auto; }
+.tips-title { font-family:var(--font-display); font-size:24px; color:white; margin-bottom:24px; text-align:center; }
+.tips-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; }
+.tip { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); padding:20px; }
+.tip-icon { font-size:20px; margin-bottom:10px; }
+.tip h4 { font-family:var(--font-display); font-size:15px; color:white; margin-bottom:6px; }
+.tip p { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.6; }
+
+.back-bar { background:var(--peche-pale); padding:16px 24px; text-align:center; }
+.back-bar a { color:var(--brick); font-size:12px; letter-spacing:1px; text-transform:uppercase; font-weight:500; text-decoration:none; }
+
+@media(max-width:600px){
+  .card-body { padding:24px 16px; }
+  .card-num { font-size:40px; top:12px; right:12px; }
+  .hero { padding:40px 16px 32px; }
+}
+
+/* ── Styles spécifiques palette-toulouse.html ── */
+body { padding: 40px 20px; }
+
+h1 { font-family:var(--font-display); font-size:clamp(28px,5vw,48px); color:var(--dark); margin-bottom:6px; }
+.subtitle { font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--text-muted); margin-bottom:48px; }
+
+.section-title {
+  font-family:var(--font-display); font-size:18px; color:var(--dark);
+  margin-bottom:20px; margin-top:48px; padding-bottom:8px;
+  border-bottom:1px solid rgba(184,122,106,0.2);
+}
+
+
+
+
+.swatch:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.14); }
+
+
+
+
+
+
+.swatch.copied 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:600px) {
+  
+    
+  
+  }
+
+/* ── Navigation principale entre sections ── */
+.app-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--dark);
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  z-index: 200;
+}
+.app-nav-btn {
+  flex: 0 1 200px;
+  padding: 12px 4px 10px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: color 0.2s;
+  text-transform: uppercase;
+}
+.app-nav-btn .icon { font-size: 18px; }
+.app-nav-btn.active, .app-nav-btn:hover { color: var(--gold-light); }
+
+/* Sections principales */
+.app-section { display: none; padding-bottom: 64px; }
+.app-section.active { display: block; }
+
+/* Override day-section for nested context */
+#section-voyage .day-section { min-height: auto; }
+#section-voyage .day-section.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1 : VOYAGE (contenu principal)
+════════════════════════════════════════════════════════════ -->
+<div id="section-voyage" class="app-section active">
+<!-- HERO -->
+<div class="hero">
+  <div class="hero__tag">Notre voyage • Printemps 2026</div>
+  <h1><span>Toulouse</span></h1>
+  <div class="hero__amp">&</div>
+  <h1><span>Carcassonne</span></h1>
+  <div class="hero__sub">5 jours en amoureux dans le Sud-Ouest</div>
+  <div class="hero__meta">
+    <div class="hero__meta-item">
+      <strong>5</strong>
+      <span>Jours</span>
+    </div>
+    <div class="hero__meta-item">
+      <strong>2</strong>
+      <span>Villes</span>
+    </div>
+    <div class="hero__meta-item">
+      <strong>∞</strong>
+      <span>Souvenirs</span>
+    </div>
+  </div>
+  <div class="hero__scroll">Découvrir</div>
+</div>
+
+<!-- NAV -->
+<nav class="sticky-nav">
+  <button class="nav-btn active" onclick="showSection('overview')" aria-label="Vue d'ensemble du voyage">Vue d'ensemble</button>
+  <button class="nav-btn" onclick="showSection('day1')" aria-label="Jour 1 — Toulouse">Jour 1 — Toulouse</button>
+  <button class="nav-btn" onclick="showSection('day2')" aria-label="Jour 2 — Gastronomie">Jour 2 — Gourmand</button>
+  <button class="nav-btn" onclick="showSection('day3')" aria-label="Jour 3 — Carcassonne">Jour 3 — Carcassonne</button>
+  <button class="nav-btn" onclick="showSection('day4')" aria-label="Jour 4 — Culture">Jour 4 — Flâner</button>
+  <button class="nav-btn" onclick="showSection('day5')" aria-label="Jour 5 — Dernier jour">Jour 5 — Escapade</button>
+  <button class="nav-btn" onclick="showSection('tips')" aria-label="Infos pratiques">Infos pratiques</button>
+  <a class="nav-btn" href="restos-toulouse.html" style="text-decoration:none;">🍽 Guide Restos</a>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="overview" class="day-section active">
+  <div class="day-header">
+    <div class="day-number">5</div>
+    <div class="day-label">Itinéraire complet</div>
+    <div class="day-title">Notre programme jour par jour</div>
+    <div class="day-subtitle">Clique sur un jour pour explorer</div>
+  </div>
+
+  <div style="padding: 0 20px;">
+    <div class="overview-grid">
+      <div class="overview-card" onclick="showSection('day1')" aria-label="Jour 1 — Toulouse">
+        <div class="overview-day-num">01</div>
+        <div class="overview-day-label">Toulouse</div>
+        <div class="overview-day-title">Cœur de la Ville Rose</div>
+        <div class="overview-day-sub">Saint-Sernin, Musée des Augustins, Pont Neuf, Garonne</div>
+      </div>
+      <div class="overview-card" onclick="showSection('day2')" aria-label="Jour 2 — Gastronomie">
+        <div class="overview-day-num">02</div>
+        <div class="overview-day-label">Toulouse — Gastronomie</div>
+        <div class="overview-day-title">Marchés & Haute Cuisine</div>
+        <div class="overview-day-sub">Marché Victor Hugo, Place du Capitole, cuisine du terroir</div>
+      </div>
+      <div class="overview-card" onclick="showSection('day3')" aria-label="Jour 3 — Carcassonne">
+        <div class="overview-day-num">03</div>
+        <div class="overview-day-label">Carcassonne</div>
+        <div class="overview-day-title">La Cité Médiévale</div>
+        <div class="overview-day-sub">Château, remparts, Canal du Midi, train AR</div>
+      </div>
+      <div class="overview-card" onclick="showSection('day4')" aria-label="Jour 4 — Culture">
+        <div class="overview-day-num">04</div>
+        <div class="overview-day-label">Toulouse — Culture</div>
+        <div class="overview-day-title">Musées & Détente</div>
+        <div class="overview-day-sub">Muséum, déjeuner Au Pois Gourmand, canal, shopping</div>
+      </div>
+      <div class="overview-card" onclick="showSection('day5')" aria-label="Jour 5 — Dernier jour">
+        <div class="overview-day-num">05</div>
+        <div class="overview-day-label">Toulouse — Libre</div>
+        <div class="overview-day-title">À notre rythme</div>
+        <div class="overview-day-sub">Flâneries, souvenirs, dernier repas mémorable</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="budget-section" style="margin-top: 2px;">
+    <div class="budget-title">Budget estimé (sans hôtel)</div>
+    <div class="budget-grid">
+      <div class="budget-item">
+        <span class="budget-amount">~490€</span>
+        <span class="budget-label">Repas (5j × ~100€/j)</span>
+      </div>
+      <div class="budget-item">
+        <span class="budget-amount">39€</span>
+        <span class="budget-label">Activités</span>
+      </div>
+      <div class="budget-item">
+        <span class="budget-amount">40€</span>
+        <span class="budget-label">Transports</span>
+      </div>
+      <div class="budget-item">
+        <span class="budget-amount">~570€</span>
+        <span class="budget-label">Total (2 pers.)</span>
+      </div>
+    </div>
+    <div class="budget-note">MAX 100€ / JOUR POUR DEUX — REPAS COMPRIS</div>
+  </div>
+</div>
+
+<!-- JOUR 1 -->
+<div id="day1" class="day-section">
+  <div class="day-header">
+    <div class="day-number">01</div>
+    <div class="day-label">Premier jour • Toulouse</div>
+    <div class="day-title">Cœur de la Ville Rose</div>
+    <div class="day-subtitle">Architecture romane, histoire occitane & première soirée</div>
+  </div>
+
+  <div class="culture-box container">
+    <div class="culture-box-tag">📖 Livre de voyage — Histoire & Culture</div>
+    <h3>La Ville Rose — pourquoi cette couleur ?</h3>
+    <p>Toulouse doit sa teinte chaude et reconnaissable à la brique romaine. À la différence du nord de la France qui construisait en pierre calcaire blanche, la région toulousaine manquait de pierre mais disposait d'une argile exceptionnelle. Les romains puis les médiévaux ont donc bâti en brique cuite — une brique si locale qu'elle prend des nuances roses, orangées ou dorées selon l'heure du jour. Au coucher du soleil, la ville entière semble s'embraser.</p>
+    <div class="culture-facts">
+      <div class="culture-fact"><strong>Fondée en</strong>~300 av. J.-C. (cité celtibère)</div>
+      <div class="culture-fact"><strong>Capitale de</strong>l'Occitanie</div>
+      <div class="culture-fact"><strong>Population</strong>480 000 habitants</div>
+      <div class="culture-fact"><strong>Surnom</strong>La Ville Rose</div>
+      <div class="culture-fact"><strong>Fleuve</strong>La Garonne</div>
+    </div>
+  </div>
+
+  <div class="map-container map-wrap">
+    <div class="map-label">🗺 Itinéraire Jour 1 — À pied dans Toulouse</div>
+    <iframe
+      title="Carte Jour 1 — Toulouse à pied"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=1.4300%2C43.5940%2C1.4520%2C43.6120&layer=mapnik&marker=43.6083%2C1.4418"
+      allowfullscreen loading="lazy" >
+    </iframe>
+    <a href="https://www.google.com/maps/dir/Basilique+Saint-Sernin+Toulouse/Mus%C3%A9e+des+Augustins+Toulouse/Pont+Neuf+Toulouse/Jardin+Royal+Toulouse/@43.603,1.441,15z/data=!3m1!4b1!4m26!4m25!1m5!1m1!1s0x12aebd8d2f92e28d:0x0!2m2!1d1.4418!2d43.6083!1m5!1m1!1s0x12aebb3c5dcf0001:0x0!2m2!1d1.4431!2d43.5981!1m5!1m1!1s0x12aebbf0001:0x0!2m2!1d1.4384!2d43.5997!1m5!1m1!1s0x12aebb0001:0x0!2m2!1d1.4480!2d43.5960!3e2" target="_blank" rel="noopener noreferrer" class="btn-maps map-open-btn">Ouvrir dans Google Maps →</a>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time"><span>10h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card highlight">
+          <div class="card-type highlight">⛪ Incontournable</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Basilique+Saint-Sernin+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Basilique Saint-Sernin 📍</a></div>
+          <div class="card-desc">Le joyau roman de Toulouse. L'un des plus grands édifices romans du monde, classé UNESCO, avec son fameux clocher octogonal de 64 mètres.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 1h–1h30</div>
+            <div class="card-meta-item">💶 Gratuit (extérieur)</div>
+            <div class="card-meta-item">📍 Place Saint-Sernin</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Histoire du lieu</button>
+          <div class="story-drawer">
+            Construite à partir du XIe siècle, la basilique Saint-Sernin est dédiée au premier évêque martyr de Toulouse. Elle fut pendant des siècles l'une des étapes majeures du chemin de Saint-Jacques-de-Compostelle — des milliers de pèlerins venaient y vénérer les reliques du saint. La légende dit que Saturnin (Sernin en occitan) fut traîné par un taureau qui lui ôta la vie. Une mort aussi héroïque que symbolique dans cette région de taurins.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>11h30</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot stone"></div>
+        <div class="timeline-card culture">
+          <div class="card-type culture">🎨 Musée</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Musee+des+Augustins+21+Rue+de+Metz+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Musée des Augustins 📍</a></div>
+          <div class="card-desc">Dans un couvent gothique du XIVe siècle, une collection exceptionnelle de sculptures médiévales et de peintures locales. Le cloître est à couper le souffle.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 1h30</div>
+            <div class="card-meta-item">💶 5€</div>
+            <div class="card-meta-item">📍 21 Rue de Metz</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Histoire du lieu</button>
+          <div class="story-drawer">
+            Le couvent des Augustins fut fondé en 1309 sous la protection du pape Clément V. À la Révolution française, comme beaucoup d'établissements religieux, il fut transformé — d'abord en dépôt d'œuvres d'art confisquées, puis en musée. Aujourd'hui, ses cloîtres gothiques abritent une collection unique de sculptures romanes rescapées des démolitions révolutionnaires.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>13h30</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot gold"></div>
+        <div class="timeline-card food">
+          <div class="card-type food">🍽 Déjeuner</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Pastel+et+Sarrasin+Rue+du+Taur+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Pastel et Sarrasin 📍</a></div>
+          <div class="card-desc">Rue du Taur, à 2min à pied de la Basilique. Galettes de sarrasin bio, salades originales, terrasse ensoleillée. Cuisine bretonne revisitée avec produits locaux. Moins de 15€/pers. ⭐ Très bien noté.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">💶 ~25–30€ pour deux</div>
+            <div class="card-meta-item">📍 Rue du Taur</div>
+            <div class="card-meta-item">✅ Validé TheFork & Google</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ À savoir sur la cuisine occitane</button>
+          <div class="story-drawer">
+            Le cassoulet — ce ragoût de haricots blancs, saucisse de Toulouse et confit de canard — est l'objet d'une rivalité légendaire entre Castelnaudary (qui s'en prétend la "capitale"), Carcassonne et Toulouse. On dit que la recette remonte à la Guerre de Cent Ans, lorsque des cuisiniers assiégés auraient réuni tous les restes disponibles pour nourrir les soldats. Une légende gourmande vaut bien une vraie histoire.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>15h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card highlight">
+          <div class="card-type highlight">🌉 Balade</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Pont+Neuf+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Pont Neuf & les quais de la Garonne 📍</a></div>
+          <div class="card-desc">Le plus vieux pont de Toulouse (XVIe siècle, malgré son nom !) offre la vue la plus emblématique sur la ville rose. Les quais sont parfaits pour une flânerie romantique.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 1h</div>
+            <div class="card-meta-item">💶 Gratuit</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Histoire du lieu</button>
+          <div class="story-drawer">
+            Le "Pont Neuf" de Toulouse est en réalité le plus ancien pont de la ville, construit entre 1544 et 1632. Son nom "Neuf" s'opposait aux vieux ponts médiévaux en bois qui le précédaient. Il est remarquable pour ses sept arches inégales, conçues pour résister aux crues brutales de la Garonne — une rivière capricieuse qui a souvent surpris les Toulousains par ses débordements soudains.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>19h30</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot gold"></div>
+        <div class="timeline-card food">
+          <div class="card-type food">🍷 Dîner</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Le+Bibent+5+Place+du+Capitole+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Le Bibent 📍</a></div>
+          <div class="card-desc">Place du Capitole, dans un écrin Napoléon III classé monument historique depuis 1861. Fresques, miroirs, lustres Belle Époque. Cassoulet, foie gras, profiteroles. L'institution toulousaine. ⭐ 4.1/5 · 6130 avis.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">💶 ~80–120€ pour deux</div>
+            <div class="card-meta-item">📍 5 Place du Capitole</div>
+            <div class="card-meta-item">📞 Réserver sur TheFork</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>17h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot stone"></div>
+        <div class="timeline-card">
+          <div class="card-type culture">🌿 Détente</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Jardin+Royal+Toulouse+Grand+Rond" target="_blank" rel="noopener noreferrer" class="link-place">Jardin Royal & Grand Rond 📍</a></div>
+          <div class="card-desc">L'élégant jardin à la française du XVIIe siècle, pour se reposer avant le dîner. Ses allées centenaires et ses parterres soignés offrent un havre de paix.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 1h</div>
+            <div class="card-meta-item">💶 Gratuit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOUR 2 -->
+<div id="day2" class="day-section">
+  <div class="day-header">
+    <div class="day-number">02</div>
+    <div class="day-label">Deuxième jour • Toulouse</div>
+    <div class="day-title">Marchés, Capitole & Haute Cuisine</div>
+    <div class="day-subtitle">L'art de vivre toulousain dans toute sa splendeur</div>
+  </div>
+
+  <div class="culture-box container">
+    <div class="culture-box-tag">📖 Livre de voyage — Gastronomie occitane</div>
+    <h3>Toulouse, capitale de la gastronomie du Sud-Ouest</h3>
+    <p>La saucisse de Toulouse, le foie gras, le canard confit, le cassoulet — la gastronomie locale n'est pas une affaire légère. Elle porte en elle l'âme d'une région qui a toujours su prendre le temps de vivre. Les marchés toulousains sont des cérémonies sociales autant que des rendez-vous culinaires. On y discute, on y goûte, on y refait le monde.</p>
+    <div class="culture-facts">
+      <div class="culture-fact"><strong>Spécialité n°1</strong>Cassoulet & Saucisse de Toulouse</div>
+      <div class="culture-fact"><strong>Marché phare</strong>Victor Hugo (couvert, mythique)</div>
+      <div class="culture-fact"><strong>Vin régional</strong>Fronton (AOC, cépage Négrette)</div>
+      <div class="culture-fact"><strong>Fromage</strong>Roquefort (Aveyron voisin)</div>
+    </div>
+  </div>
+
+  <div class="map-container map-wrap">
+    <div class="map-label">🗺 Itinéraire Jour 2 — Marchés & Place du Capitole</div>
+    <iframe
+      title="Carte Jour 2 — Marchés et Capitole"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=1.4320%2C43.5990%2C1.4520%2C43.6110&layer=mapnik&marker=43.6045%2C1.4442"
+      allowfullscreen loading="lazy" >
+    </iframe>
+    <a href="https://www.google.com/maps/dir/Marché+Victor+Hugo+Toulouse/Place+du+Capitole+Toulouse/@43.604,1.442,15z" target="_blank" rel="noopener noreferrer" class="btn-maps map-open-btn">Ouvrir dans Google Maps →</a>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time"><span>9h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot gold"></div>
+        <div class="timeline-card food">
+          <div class="card-type food">🛍 Marché</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Marche+Victor+Hugo+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Marché Victor Hugo 📍</a></div>
+          <div class="card-desc">Le marché couvert le plus emblématique de Toulouse. Fromages, charcuteries, produits frais régionaux. Ambiance incroyable le matin. Arrive tôt !</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 1h30</div>
+            <div class="card-meta-item">💶 Entrée libre</div>
+            <div class="card-meta-item">⚠️ Fermé lundi</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Anecdote de voyage</button>
+          <div class="story-drawer">
+            Les marchés du midi de la France ont une particularité délicieuse : au premier étage du marché Victor Hugo, plusieurs restaurants de tripiers et cuisiniers proposent des déjeuners depuis les années 1950. La coutume veut qu'on achète ses ingrédients en bas puis qu'on monte les faire cuisiner. Une tradition orale dit que c'est là que les vieilles familles toulousaines se retrouvent tous les samedis — depuis des générations.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>11h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card highlight">
+          <div class="card-type highlight">🏛 Incontournable</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Place+du+Capitole+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Place du Capitole 📍</a></div>
+          <div class="card-desc">Le cœur battant de Toulouse. Cette immense place rectangulaire est entourée de façades en brique rose baroque. La mairie (le Capitole) est ornée d'une croix occitane au sol.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 30min–1h</div>
+            <div class="card-meta-item">💶 Gratuit</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Histoire du lieu</button>
+          <div class="story-drawer">
+            Le Capitole tire son nom des "Capitouls" — les magistrats qui gouvernaient Toulouse au Moyen-Âge. Ces 12 hommes élus avaient un pouvoir considérable et même le droit de rendre la justice. Le bâtiment actuel date du XVIIIe siècle mais la tradition de gouvernance locale remonte à 1120. Fait méconnu : c'est dans une salle du Capitole que fut créée la Croix Occitane à 12 pointes, symbole de toute la région.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>12h30</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot gold"></div>
+        <div class="timeline-card food">
+          <div class="card-type food">🍽 Déjeuner</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Le+Bouillon+Capitole+1+Place+du+Capitole+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Le Bouillon Capitole 📍</a></div>
+          <div class="card-desc">Face au Capitole. Plats dès 1,90€ : œufs mimosa, cassoulet, bœuf bourguignon. Service continu 7j/7 sans réservation. L'adresse populaire de Toulouse — file courte mais qui avance vite. ✅ Validé Google & Tripadvisor.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">💶 ~25–35€ pour deux</div>
+            <div class="card-meta-item">📍 1 Place du Capitole</div>
+            <div class="card-meta-item">⏰ 7j/7 · 11h30–23h30</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ À savoir sur la cuisine occitane</button>
+          <div class="story-drawer">
+            Le cassoulet — ce ragoût de haricots blancs, saucisse de Toulouse et confit de canard — est l'objet d'une rivalité légendaire entre Castelnaudary, Carcassonne et Toulouse. On dit que la recette remonte à la Guerre de Cent Ans, lorsque des cuisiniers assiégés auraient réuni tous les restes disponibles pour nourrir les soldats. Une légende gourmande vaut bien une vraie histoire.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>18h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot stone"></div>
+        <div class="timeline-card">
+          <div class="card-type culture">🥂 Apéro + dîner léger</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Place+du+Capitole+Toulouse+terrasse" target="_blank" rel="noopener noreferrer" class="link-place">Terrasse Capitole + tapas 📍</a></div>
+          <div class="card-desc">S'installer en terrasse au soleil couchant avec un verre de Fronton (le vin local). Dîner léger dans un bar à tapas du quartier — parfait après un déjeuner copieux.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">💶 30–40€ pour deux</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOUR 3 -->
+<div id="day3" class="day-section">
+  <div class="day-header">
+    <div class="day-number">03</div>
+    <div class="day-label">Troisième jour • Carcassonne</div>
+    <div class="day-title">La Cité Médiévale</div>
+    <div class="day-subtitle">Train 9h15 • Retour 18h • Une journée hors du temps</div>
+  </div>
+
+  <div class="culture-box container">
+    <div class="culture-box-tag">📖 Livre de voyage — Carcassonne, mille ans d'histoire</div>
+    <h3>La forteresse que tout le monde a voulu garder</h3>
+    <p>Visigoth, Sarrasin, Croisé, Cathare, Capétien — Carcassonne a appartenu à tous ceux qui en voulaient. Sa double enceinte de 52 tours est l'une des mieux conservées d'Europe, et pourtant elle faillit être rasée au XIXe siècle. C'est l'architecte Viollet-le-Duc qui la sauva, au prix d'une restauration si ambitieuse que certains la trouvèrent trop "parfaite" pour être vraie. Carcassonne, une ville dont la survie même est une histoire extraordinaire.</p>
+    <div class="culture-facts">
+      <div class="culture-fact"><strong>Classée UNESCO</strong>1997</div>
+      <div class="culture-fact"><strong>Longueur remparts</strong>3 km de double enceinte</div>
+      <div class="culture-fact"><strong>Nombre de tours</strong>52 tours</div>
+      <div class="culture-fact"><strong>Restaurateur</strong>Viollet-le-Duc (1849)</div>
+      <div class="culture-fact"><strong>Cathares</strong>Dernier refuge au XIIIe s.</div>
+    </div>
+  </div>
+
+  <div class="map-container map-wrap">
+    <div class="map-label">🗺 Carcassonne — Cité médiévale & Canal du Midi</div>
+    <iframe
+      title="Carte Jour 3 — Carcassonne"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=2.3420%2C43.2040%2C2.3720%2C43.2170&layer=mapnik&marker=43.2093%2C2.3624"
+      allowfullscreen loading="lazy" >
+    </iframe>
+    <a href="https://www.google.com/maps/dir/Gare+de+Carcassonne/Ch%C3%A2teau+Comtal+Carcassonne/Canal+du+Midi+Carcassonne/@43.208,2.355,14z" target="_blank" rel="noopener noreferrer" class="btn-maps map-open-btn">Ouvrir dans Google Maps →</a>
+  </div>
+
+  <div class="train-banner container">
+    <div>🚆 <strong>Train depuis Toulouse Matabiau</strong></div>
+    <div class="train-banner__info">Départ 9h15 • Arrivée ~10h15 • 20–30€ aller-retour</div>
+    <div class="train-banner__badge">⚠️ Réserver à l'avance</div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time"><span>10h30</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card highlight">
+          <div class="card-type highlight">🏰 Incontournable</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Chateau+Comtal+Carcassonne" target="_blank" rel="noopener noreferrer" class="link-place">Château Comtal & les Remparts 📍</a></div>
+          <div class="card-desc">Marche le long des remparts extérieurs (gratuit), puis visite du château et des lices intérieures. La vue sur la campagne est époustouflante. Prévois 2–3h.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 2h–3h</div>
+            <div class="card-meta-item">💶 9€ château, remparts gratuits</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Les Cathares : une histoire tragique</button>
+          <div class="story-drawer">
+            Au début du XIIIe siècle, Carcassonne fut l'épicentre de la Croisade des Albigeois — une guerre sainte lancée par le pape Innocent III contre les Cathares, une communauté chrétienne jugée "hérétique". Les Cathares prônaient la pauvreté, le végétarisme et le pacifisme. En 1209, Simon de Montfort prit la cité sans combattre. Le vicomte Raymond-Roger Trencavel, défenseur de la ville, mourut mystérieusement en prison quelques mois plus tard. Une histoire de tolérance brisée qui résonne encore dans les pierres de la forteresse.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>13h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot gold"></div>
+        <div class="timeline-card food">
+          <div class="card-type food">🍽 Déjeuner</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/La+Demeure+du+Cassoulet+Cite+medievale+Carcassonne" target="_blank" rel="noopener noreferrer" class="link-place">La Demeure du Cassoulet 📍</a></div>
+          <div class="card-desc">Dans la Cité médiévale. Cassoulet maison copieux et généreux, cuisine 100% locale, service chaleureux. L'adresse incontournable dans les remparts. ⭐ Très bien noté sur Google & Tripadvisor.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">💶 ~40–50€ pour deux</div>
+            <div class="card-meta-item">📍 Dans la Cité médiévale</div>
+          </div>
+          <div class="card__alternatives">
+            <div class="text-label-sm" style="color:var(--text-muted);display:block;margin-bottom:8px;">3 options selon l'envie</div>
+            🟢 <strong>Rapide</strong> → <a href="https://www.google.com/maps/search/La+Demeure+du+Cassoulet+Carcassonne" target="_blank" rel="noopener noreferrer" >La Demeure du Cassoulet 📍</a> — cassoulet maison, ~40€/2<br>
+            🟡 <strong>Modéré</strong> → <a href="https://www.google.com/maps/search/Le+Flagrant+des+Lices+Place+Marcou+Carcassonne" target="_blank" rel="noopener noreferrer" >Le Flagrant des Lices 📍</a> — Place Marcou, table sûre<br>
+            🔴 <strong>Posé</strong> → <a href="https://www.google.com/maps/search/La+Marquiere+13+Rue+Saint-Jean+Carcassonne" target="_blank" rel="noopener noreferrer" >La Marquière 📍</a> — 13 Rue Saint-Jean, cuisine régionale raffinée ⭐ TripAdvisor 2025
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Cassoulet de Carcassonne vs Toulouse</button>
+          <div class="story-drawer">
+            Le grand débat culinaire régional : quel est le "vrai" cassoulet ? Castelnaudary revendique l'invention, Carcassonne utilise du mouton et de la perdrix en saison, Toulouse privilégie la saucisse locale et le confit de canard. L'Académie du Cassoulet, fondée à Castelnaudary en 1978, s'est auto-proclamée arbitre — mais les Toulousains et Carcassonnais ignorent souverainement ses décrets. Goûte les deux et décide toi-même.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>15h30</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot stone"></div>
+        <div class="timeline-card culture">
+          <div class="card-type culture">⛵ Balade</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Canal+du+Midi+Carcassonne" target="_blank" rel="noopener noreferrer" class="link-place">Canal du Midi 📍</a></div>
+          <div class="card-desc">Le chef-d'œuvre de Pierre-Paul Riquet (1681). Balade à pied sous les platanes centenaires ou mini-croisière d'1h. Un classement UNESCO à lui seul.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 1h30–2h</div>
+            <div class="card-meta-item">💶 Gratuit (balade) / 10€ (croisière)</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ L'histoire folle du Canal du Midi</button>
+          <div class="story-drawer">
+            Pierre-Paul Riquet était un fermier général des gabelles (collecteur de l'impôt sur le sel) qui rêvait de relier l'Atlantique à la Méditerranée pour éviter le dangereux détroit de Gibraltar. Il investit toute sa fortune personnelle dans ce projet pharaonique. Le canal fait 240 km, compte 91 écluses, et employa jusqu'à 12 000 ouvriers — dont 600 femmes, fait rare à l'époque. Riquet mourut 8 mois avant l'inauguration en 1681. Son œuvre lui survit depuis 350 ans.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>18h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card" class="transport">
+          <div class="card-type transport">🚆 Retour</div>
+          <div class="card-title">Train retour vers Toulouse</div>
+          <div class="card-desc">Retour à Toulouse Matabiau (~19h). Soirée libre — profite d'un dîner léger en terrasse.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ ~1h de trajet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOUR 4 -->
+<div id="day4" class="day-section">
+  <div class="day-header">
+    <div class="day-number">04</div>
+    <div class="day-label">Quatrième jour • Toulouse</div>
+    <div class="day-title">Musées, Canal & Shopping</div>
+    <div class="day-subtitle">Détente, culture et dîner étoilé</div>
+  </div>
+
+  <div class="culture-box container">
+    <div class="culture-box-tag">📖 Livre de voyage — Toulouse scientifique</div>
+    <h3>La ville de l'espace et de l'aéronautique</h3>
+    <p>Toulouse est aussi la capitale européenne de l'aéronautique. Airbus y est né, le Concorde y a été assemblé, et la Cité de l'Espace permet de toucher du doigt (presque) les étoiles. Mais avant l'âge spatial, la ville fut un centre intellectuel majeur — sa faculté des Arts, fondée au XIIIe siècle, est l'une des plus anciennes d'Europe. Une ville qui a toujours regardé vers le ciel, d'une manière ou d'une autre.</p>
+    <div class="culture-facts">
+      <div class="culture-fact"><strong>Airbus</strong>Siège mondial à Toulouse</div>
+      <div class="culture-fact"><strong>Concorde</strong>Dernier vol 2003</div>
+      <div class="culture-fact"><strong>Université</strong>Fondée en 1229</div>
+      <div class="culture-fact"><strong>Cité de l'Espace</strong>1997, visite incontournable</div>
+    </div>
+  </div>
+
+  <div class="map-container map-wrap">
+    <div class="map-label">🗺 Itinéraire Jour 4 — Muséum, Canal & Shopping</div>
+    <iframe
+      title="Carte Jour 4 — Muséum et Canal"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=1.4280%2C43.5960%2C1.4500%2C43.6080&layer=mapnik&marker=43.6010%2C1.4390"
+      allowfullscreen loading="lazy" >
+    </iframe>
+    <a href="https://www.google.com/maps/dir/Mus%C3%A9um+de+Toulouse/Canal+du+Midi+Toulouse/Rue+Saint-Rome+Toulouse/@43.600,1.438,15z" target="_blank" rel="noopener noreferrer" class="btn-maps map-open-btn">Ouvrir dans Google Maps →</a>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time"><span>10h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot stone"></div>
+        <div class="timeline-card culture">
+          <div class="card-type culture">🦕 Musée</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Museum+de+Toulouse+35+Allee+Jules+Guesde" target="_blank" rel="noopener noreferrer" class="link-place">Muséum de Toulouse 📍</a></div>
+          <div class="card-desc">L'un des plus grands muséums d'histoire naturelle de France. Collections géologiques, préhistoriques et ethnographiques époustouflantes dans un magnifique bâtiment Art Nouveau.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 2h</div>
+            <div class="card-meta-item">💶 5€</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Le trésor caché du musée</button>
+          <div class="story-drawer">
+            Le Muséum possède l'un des plus importants ossements de dinosaures d'Europe — notamment des spécimens rapportés des expéditions françaises en Amérique du Sud au XIXe siècle. Mais son trésor le plus méconnu est sa collection ethnographique : des objets collectés par des explorateurs toulousains entre 1820 et 1920, véritable fenêtre sur des civilisations que le monde occidental découvrait alors avec stupéfaction.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>13h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot gold"></div>
+        <div class="timeline-card food">
+          <div class="card-type food">🍽 Déjeuner</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Au+Pois+Gourmand+3+rue+Emile+Heybrard+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Au Pois Gourmand 📍</a></div>
+          <div class="card-desc">En bord de Garonne, terrasse panoramique sur le fleuve dans un cadre colonial XIXe. Cuisine gastronomique décomplexée du chef Ugo Plazzotta. Menu marché midi à 29€ = meilleur rapport qualité-prix de Toulouse. ⭐ #21/1639 · Guide Michelin · 4.6/5.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">💶 ~58€ pour deux (midi)</div>
+            <div class="card-meta-item">📍 3 rue Émile Heybrard</div>
+            <div class="card-meta-item">📞 Réserver sur TheFork</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>15h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="card-type culture">🚲 Balade</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Canal+du+Midi+Toulouse+Port+de+l+Embouchure" target="_blank" rel="noopener noreferrer" class="link-place">Canal du Midi — côté Toulouse 📍</a></div>
+          <div class="card-desc">Le canal commence (ou se termine) à Toulouse. Balade à vélo (location ~15€) ou à pied sous les platanes. Ambiance douce et hors du temps.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 1h30–2h</div>
+            <div class="card-meta-item">💶 Gratuit ou 15€ vélo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-time"><span>17h00</span></div>
+      <div class="timeline-body">
+        <div class="timeline-dot gold"></div>
+        <div class="timeline-card">
+          <div class="card-type food">🛍 Shopping</div>
+          <div class="card-title"><a href="https://www.google.com/maps/search/Rue+Saint-Rome+Toulouse" target="_blank" rel="noopener noreferrer" class="link-place">Rue Saint-Rome & artisans locaux 📍</a></div>
+          <div class="card-desc">La rue commerçante historique du centre piéton. Boutiques locales, créateurs, épiceries fines. Parfait pour les cadeaux et souvenirs de qualité.</div>
+          <div class="card-meta">
+            <div class="card-meta-item">⏱ 1h</div>
+          </div>
+          <button class="story-toggle" onclick="toggleStory(this)">+ Quoi rapporter ?</button>
+          <div class="story-drawer">
+            Les violettes de Toulouse sont l'emblème floral de la ville — on en fait des bonbons, des liqueurs, des parfums. Offertes par les amoureux depuis le XIXe siècle, elles symbolisent la tendresse et la fidélité. Cherche aussi les "gimblettes de Toulouse" (petits biscuits annulaires au zeste de citron) et les saucissons de la Maison Garcia — des adresses mythiques qui se transmettent de génération en génération.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOUR 5 -->
+<div id="day5" class="day-section">
+  <div class="day-header">
+    <div class="day-number">05</div>
+    <div class="day-label">Cinquième jour • Toulouse</div>
+    <div class="day-title">Dernier matin, pour toujours</div>
+    <div class="day-subtitle">À notre rythme • Pas d'agenda • Juste nous</div>
+  </div>
+
+  <div class="culture-box container">
+    <div class="culture-box-tag">📖 Livre de voyage — L'art du dernier jour</div>
+    <h3>Ce que les voyages nous laissent</h3>
+    <p>Le dernier jour d'un voyage a une saveur particulière. On voit enfin la ville sans chercher à tout voir. On s'assoit dans un café en sachant qu'on n'a plus rien à cocher sur une liste. C'est souvent là que les meilleurs souvenirs se créent — une rencontre inattendue, une ruelle qu'on n'avait pas remarquée, un moment de silence ensemble face à quelque chose de beau.</p>
+    <div class="culture-facts">
+      <div class="culture-fact"><strong>Notre conseil</strong>Pas de plan fixe ce jour-là</div>
+      <div class="culture-fact"><strong>Idée</strong>Café du marché Victor Hugo le matin</div>
+      <div class="culture-fact"><strong>Idée</strong>Dernière balade quais de la Garonne</div>
+      <div class="culture-fact"><strong>Tradition</strong>Un souvenir acheté ensemble</div>
+    </div>
+  </div>
+
+  <div class="map-container map-wrap">
+    <div class="map-label">🗺 Toulouse — Explorer librement</div>
+    <iframe
+      title="Carte Jour 5 — Toulouse libre"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=1.4100%2C43.5850%2C1.4700%2C43.6300&layer=mapnik&marker=43.6047%2C1.4442"
+      allowfullscreen loading="lazy" >
+    </iframe>
+    <a href="https://www.google.com/maps/place/Toulouse/@43.604,1.444,14z" target="_blank" rel="noopener noreferrer" class="btn-maps map-open-btn">Ouvrir dans Google Maps →</a>
+  </div>
+
+  <div class="container" style="padding-bottom:60px;">
+    <div class="timeline-card food" style="text-align:center;border-left:none;transform:none;cursor:default;">
+      <div style="font-family:var(--font-italic);font-size:40px;color:var(--gold);margin-bottom:16px;">✦</div>
+      <div class="card-title" style="font-size:22px;margin-bottom:16px;">Ce jour t'appartient</div>
+      <div class="card-desc font-italic" style="text-align:left;max-width:500px;margin:0 auto;">
+        Dors un peu plus longtemps. Prends le café lentement. Flâne sans but. Reviens sur un endroit qui t'a touché le premier jour et vois si tu le regardes différemment.
+        <br><br>
+        C'est ça, voyager vraiment.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFOS PRATIQUES -->
+<div id="tips" class="day-section">
+  <div class="day-header">
+    <div class="day-number">✦</div>
+    <div class="day-label">À savoir</div>
+    <div class="day-title">Infos pratiques</div>
+    <div class="day-subtitle">Tout ce qu'il faut savoir avant de partir</div>
+  </div>
+
+  <div class="tips-section" style="min-height: 60vh;">
+    <div class="tips-title">Infos pratiques & hôtel</div>
+    <div class="tips-grid">
+      <div class="tip-card" style="border-top-color: var(--violette); grid-column: 1 / -1;">
+        <div class="tip-icon">🏨</div>
+        <h4>Notre hôtel</h4>
+        <p>
+          <strong>Hôtel Albert 1er ★★★</strong><br>
+          <a href="https://www.google.com/maps/search/Hotel+Albert+1er+8+Rue+Rivals+Toulouse" target="_blank" rel="noopener noreferrer" style="color:var(--brick);font-weight:500;text-decoration:none;">
+            📍 8 Rue Rivals, 31000 Toulouse
+          </a><br>
+          <a href="tel:+33561214291" style="color:var(--text-muted);font-size:12px;text-decoration:none;">📞 05 61 21 42 91</a>
+          &nbsp;·&nbsp;
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Hotel+Albert+1er+8+Rue+Rivals+Toulouse" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted);font-size:12px;text-decoration:none;">Itinéraire →</a>
+        </p>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-icon">🍽</div>
+        <h4>Réservations conseillées</h4>
+        <p><strong>Au Pois Gourmand :</strong> réserver 3–5j avant (TheFork)<br><strong>Le Bibent :</strong> populaire le soir, réserver<br><strong>Les Jardins de l'Opéra :</strong> obligatoire</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🚆</div>
+        <h4>Train Toulouse → Carcassonne</h4>
+        <p>Réserve sur SNCF Connect ou en gare. Trajet ~1h. Départ conseillé 9h15 pour arriver vers 10h15 et profiter pleinement de la journée.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🌤</div>
+        <h4>Météo & saison</h4>
+        <p>Printemps idéal. Prévois une veste légère pour les soirs. Le mistral peut souffler fort certains jours. Crème solaire obligatoire.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🚇</div>
+        <h4>Se déplacer à Toulouse</h4>
+        <p>Métro (2 lignes), bus, vélo (VélôToulouse en libre-service). Le centre historique est entièrement piéton et se fait à pied.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🎫</div>
+        <h4>Pass Musées</h4>
+        <p>Le Pass Toulouse Métropole (~25€) donne accès aux musées municipaux. Rentable si vous visitez 3+ musées. Disponible à l'office de tourisme.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💶</div>
+        <h4>Budget repas : max 100€/jour</h4>
+        <p>Petit-déj café + viennoiserie : ~15€/j pour deux. Déjeuner : ~50–70€. Dîner léger / apéro-tapas : ~25–30€. Total : bien dans l'enveloppe !</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📱</div>
+        <h4>Apps utiles</h4>
+        <p><strong>SNCF Connect</strong> (trains)<br><strong>VélôToulouse</strong> (vélos)<br><strong>Citymapper</strong> (transports)<br><strong>TheFork</strong> (réservations resto)</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🛍</div>
+        <h4>Souvenirs à rapporter</h4>
+        <p>Violettes de Toulouse (bonbons, liqueur, parfum), saucisson sec, cassoulet en bocal, vin de Fronton, gimblettes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2 : GUIDE RESTOS
+════════════════════════════════════════════════════════════ -->
+<div id="section-restos" class="app-section">
+<div class="hero">
+  <div class="hero-tag">Guide gastronomique • Toulouse 2025–2026</div>
+  <h1>Les 5 tables<br><em>incontournables</em></h1>
+  <div class="hero-sub">Validées : Michelin · TripAdvisor · TheFork · Google Maps</div>
+  <div class="hero-badges">
+    <div class="badge">🌟 1 table Guide Michelin</div>
+    <div class="badge">🍽 Budget 12€ → 90€</div>
+    <div class="badge">📍 Toutes dans le centre</div>
+    <div class="badge">❤️ Idéales en amoureux</div>
+  </div>
+</div>
+
+<div class="intro">
+  <p>Cinq adresses choisies pour leur cohérence entre les sources — pas une seule table sélectionnée sans être confirmée par au moins deux plateformes. Du cassoulet populaire au gastronomique en bord de Garonne.</p>
+</div>
+
+<div class="cards">
+
+  <!-- 1. AU POIS GOURMAND -->
+  <div class="resto-card">
+    <div class="card-inner">
+      <div class="card-accent" style="background:#D4705A;"></div>
+      <div class="card-body">
+        <div class="card-num">01</div>
+        <div class="card-labels">
+          <div class="card-category" style="color:#D4705A;">🏆 Coup de cœur romantique • Guide Michelin</div>
+          <div class="card-name">Au Pois Gourmand</div>
+        </div>
+        <div class="stars">★★★★★ <span style="color:#B87A6A;font-size:12px;">4.6/5 · #21 Toulouse · 1811 avis</span></div>
+        <div class="divider"></div>
+        <p class="card-desc">Au bord de la Garonne, dans une maison coloniale du XIXe siècle entourée de verdure. Terrasse panoramique sur le fleuve, cuisine gastronomique décomplexée. Le chef Ugo Plazzotta sublime les produits locaux. <strong>L'adresse la plus romantique de la ville.</strong> Dans le Guide Michelin.</p>
+        <div class="card-meta-grid">
+          <div class="meta-item"><span class="meta-label">Adresse</span><span class="meta-val">3 rue Émile Heybrard</span></div>
+          <div class="meta-item"><span class="meta-label">Prix midi</span><span class="meta-val">Menu à 29€</span></div>
+          <div class="meta-item"><span class="meta-label">Prix soir</span><span class="meta-val">49–99€ / pers.</span></div>
+          <div class="meta-item"><span class="meta-label">Idéal pour</span><span class="meta-val">Dîner romantique</span></div>
+        </div>
+        <div class="card-tags">
+          <span class="tag" style="background:#FAE8DC;color:#C4705A;">🗺 Guide Michelin</span>
+          <span class="tag" style="background:#EAD8F0;color:#6B3A7A;">Vue sur la Garonne</span>
+          <span class="tag" style="background:#D8EAF5;color:#3A5A7A;">Terrasse</span>
+          <span class="tag" style="background:#F5EAD8;color:#6B4A2A;">Parking gratuit</span>
+        </div>
+        <div class="verdict-box" style="background:#FFF5F0;border-left:3px solid #D4705A;">
+          <span class="verdict-label" style="color:#D4705A;">Notre verdict</span>
+          La meilleure table romantique de Toulouse, vérifiée sur toutes les plateformes. Menu midi à 29€ = rapport qualité-prix exceptionnel. Réserver absolument pour la terrasse face au fleuve.
+        </div>
+        <div class="card-footer">
+          <a class="btn-maps" href="https://www.google.com/maps/search/Au+Pois+Gourmand+3+rue+Emile+Heybrard+Toulouse" target="_blank" rel="noopener noreferrer">📍 Google Maps</a>
+          <a class="btn-maps" href="tel:+33534364200" style="background:#7B9EBB;">📞 05 34 36 42 00</a>
+          <a class="btn-reserve" href="https://www.thefork.fr/restaurant/au-pois-gourmand-r775577" target="_blank" rel="noopener noreferrer">🍴 Réserver sur TheFork</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. LE BIBENT -->
+  <div class="resto-card">
+    <div class="card-inner">
+      <div class="card-accent" style="background:#9B7BAA;"></div>
+      <div class="card-body">
+        <div class="card-num">02</div>
+        <div class="card-labels">
+          <div class="card-category" style="color:#9B7BAA;">🏛 Institution historique • Place du Capitole</div>
+          <div class="card-name">Le Bibent</div>
+        </div>
+        <div class="stars">★★★★☆ <span style="color:#B87A6A;font-size:12px;">4.1/5 · 6130 avis · monument historique classé</span></div>
+        <div class="divider"></div>
+        <p class="card-desc">En plein cœur de la Place du Capitole, dans un écrin Napoléon III classé. Fresques, miroirs, lustres Belle Époque. Cuisine brasserie chic : cassoulet, foie gras, profiteroles. <strong>L'institution toulousaine par excellence</strong>, ouverte depuis 1861.</p>
+        <div class="card-meta-grid">
+          <div class="meta-item"><span class="meta-label">Adresse</span><span class="meta-val">5 Place du Capitole</span></div>
+          <div class="meta-item"><span class="meta-label">Prix</span><span class="meta-val">40–90€ / pers.</span></div>
+          <div class="meta-item"><span class="meta-label">Ouvert</span><span class="meta-val">Mer–Sam + Mar soir</span></div>
+          <div class="meta-item"><span class="meta-label">Idéal pour</span><span class="meta-val">Dîner élégant</span></div>
+        </div>
+        <div class="card-tags">
+          <span class="tag" style="background:#EAD8F0;color:#6B3A7A;">Monument historique</span>
+          <span class="tag" style="background:#FAE8DC;color:#C4705A;">Place du Capitole</span>
+          <span class="tag" style="background:#D8EAF5;color:#3A5A7A;">Terrasse</span>
+        </div>
+        <div class="verdict-box" style="background:#F9F5FF;border-left:3px solid #9B7BAA;">
+          <span class="verdict-label" style="color:#9B7BAA;">Notre verdict</span>
+          Cadre époustouflant, avis parfois inégaux sur la cuisine mais l'expérience du lieu vaut la visite. Idéal pour un dîner au cœur de la ville rose. Réserver pour éviter l'attente.
+        </div>
+        <div class="card-footer">
+          <a class="btn-maps" href="https://www.google.com/maps/search/Le+Bibent+5+Place+du+Capitole+Toulouse" target="_blank" rel="noopener noreferrer">📍 Google Maps</a>
+          <a class="btn-maps" href="tel:+33561230703" style="background:#7B9EBB;">📞 05 61 23 07 03</a>
+          <a class="btn-reserve" href="https://www.thefork.fr/restaurant/bibent-r205773" target="_blank" rel="noopener noreferrer">🍴 Réserver sur TheFork</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PASTEL ET SARRASIN -->
+  <div class="resto-card">
+    <div class="card-inner">
+      <div class="card-accent" style="background:#7B9EBB;"></div>
+      <div class="card-body">
+        <div class="card-num">03</div>
+        <div class="card-labels">
+          <div class="card-category" style="color:#7B9EBB;">🥞 Meilleur rapport qualité-prix • Rue du Taur</div>
+          <div class="card-name">Pastel et Sarrasin</div>
+        </div>
+        <div class="stars">★★★★★ <span style="color:#B87A6A;font-size:12px;">Très bien noté · entre Saint-Sernin et Capitole</span></div>
+        <div class="divider"></div>
+        <p class="card-desc">Rue du Taur, à deux pas de la Basilique. Galettes de sarrasin bio, crêpes au froment biologique, salades originales et wraps. Terrasse ensoleillée, patio couvert. Cuisine bretonne revisitée avec des produits locaux. <strong>Sous les 15€, qualité irréprochable.</strong></p>
+        <div class="card-meta-grid">
+          <div class="meta-item"><span class="meta-label">Adresse</span><span class="meta-val">Rue du Taur</span></div>
+          <div class="meta-item"><span class="meta-label">Prix</span><span class="meta-val">&lt;15€ / pers.</span></div>
+          <div class="meta-item"><span class="meta-label">Ouvert</span><span class="meta-val">Tj sauf lundi</span></div>
+          <div class="meta-item"><span class="meta-label">Idéal pour</span><span class="meta-val">Déjeuner léger</span></div>
+        </div>
+        <div class="card-tags">
+          <span class="tag" style="background:#D8EAF5;color:#3A5A7A;">Bio & local</span>
+          <span class="tag" style="background:#FAE8DC;color:#C4705A;">Entre St-Sernin & Capitole</span>
+          <span class="tag" style="background:#F5D5E2;color:#C45A7A;">Terrasse</span>
+        </div>
+        <div class="verdict-box" style="background:#F0F7FF;border-left:3px solid #7B9EBB;">
+          <span class="verdict-label" style="color:#7B9EBB;">Notre verdict</span>
+          L'adresse parfaite pour le déjeuner du Jour 1. Idéalement placée sur le parcours Saint-Sernin → Capitole. Produits bio, prix doux, terrasse agréable. Pas de réservation nécessaire.
+        </div>
+        <div class="card-footer">
+          <a class="btn-maps" href="https://www.google.com/maps/search/Pastel+et+Sarrasin+Toulouse+Rue+du+Taur" target="_blank" rel="noopener noreferrer">📍 Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. LE BOUILLON CAPITOLE -->
+  <div class="resto-card">
+    <div class="card-inner">
+      <div class="card-accent" style="background:#E8956A;"></div>
+      <div class="card-body">
+        <div class="card-num">04</div>
+        <div class="card-labels">
+          <div class="card-category" style="color:#E8956A;">🥚 Incontournable populaire • Place du Capitole</div>
+          <div class="card-name">Le Bouillon Capitole</div>
+        </div>
+        <div class="stars">★★★★☆ <span style="color:#B87A6A;font-size:12px;">Avis mitigés sur la qualité, prix imbattables</span></div>
+        <div class="divider"></div>
+        <p class="card-desc">Face au Capitole, dans l'esprit des bouillons parisiens. Plats dès 1,90€ (œuf mimosa) à 12€ (cassoulet). 800 couverts/jour, service continu 7j/7 jusqu'à 23h30. <strong>L'expérience populaire authentique de Toulouse.</strong> Prévoir une file d'attente.</p>
+        <div class="card-meta-grid">
+          <div class="meta-item"><span class="meta-label">Adresse</span><span class="meta-val">1 Place du Capitole</span></div>
+          <div class="meta-item"><span class="meta-label">Prix</span><span class="meta-val">~20€ max / pers.</span></div>
+          <div class="meta-item"><span class="meta-label">Ouvert</span><span class="meta-val">7j/7 · 11h30–23h30</span></div>
+          <div class="meta-item"><span class="meta-label">Réservation</span><span class="meta-val">❌ Sans réservation</span></div>
+        </div>
+        <div class="card-tags">
+          <span class="tag" style="background:#FAE8DC;color:#C4705A;">Prix ultra bas</span>
+          <span class="tag" style="background:#F5EAD8;color:#6B4A2A;">Cuisine française classique</span>
+          <span class="tag" style="background:#EAD8F0;color:#6B3A7A;">File d'attente habituelle</span>
+        </div>
+        <div class="verdict-box" style="background:#FFF8F0;border-left:3px solid #E8956A;">
+          <span class="verdict-label" style="color:#E8956A;">⚠️ À savoir</span>
+          Avis partagés : certains adorent, d'autres trouvent la cuisine basique. Réservé plutôt pour un déjeuner rapide entre deux visites. Pour un vrai repas de qualité, préfère Pastel et Sarrasin ou Au Pois Gourmand.
+        </div>
+        <div class="card-footer">
+          <a class="btn-maps" href="https://www.google.com/maps/search/Bouillon+Capitole+Place+du+Capitole+Toulouse" target="_blank" rel="noopener noreferrer">📍 Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. LES JARDINS DE L'OPÉRA -->
+  <div class="resto-card">
+    <div class="card-inner">
+      <div class="card-accent" style="background:#6B3A40;"></div>
+      <div class="card-body">
+        <div class="card-num">05</div>
+        <div class="card-labels">
+          <div class="card-category" style="color:#6B3A40;">⭐ Étoile Michelin • Gastronomique</div>
+          <div class="card-name">Les Jardins de l'Opéra</div>
+        </div>
+        <div class="stars">★★★★★ <span style="color:#B87A6A;font-size:12px;">1 étoile Michelin · Chef Stéphane Tournié · Capitole</span></div>
+        <div class="divider"></div>
+        <p class="card-desc">Au pied du Capitole, dans une cour préservée du tumulte de la ville. Le chef Stéphane Tournié propose une cuisine du Sud-Ouest gastronomique et raffinée. Cadre intimiste, lumière naturelle, service impeccable. <strong>La table étoilée la plus centrale de Toulouse.</strong></p>
+        <div class="card-meta-grid">
+          <div class="meta-item"><span class="meta-label">Adresse</span><span class="meta-val">1 Place du Capitole</span></div>
+          <div class="meta-item"><span class="meta-label">Prix</span><span class="meta-val">Menu dégustation</span></div>
+          <div class="meta-item"><span class="meta-label">Ouvert</span><span class="meta-val">Mar–Sam midi & soir</span></div>
+          <div class="meta-item"><span class="meta-label">Réservation</span><span class="meta-val">⚠️ Obligatoire</span></div>
+        </div>
+        <div class="card-tags">
+          <span class="tag" style="background:#FAE8DC;color:#8B3A20;">⭐ Étoile Michelin 2025</span>
+          <span class="tag" style="background:#EAD8F0;color:#6B3A7A;">Cuisine Sud-Ouest raffinée</span>
+          <span class="tag" style="background:#D8EAF5;color:#3A5A7A;">Cour intérieure</span>
+        </div>
+        <div class="verdict-box" style="background:#FFF0F0;border-left:3px solid #6B3A40;">
+          <span class="verdict-label" style="color:#6B3A40;">Notre verdict</span>
+          Pour un repas d'exception. Réservation indispensable plusieurs jours à l'avance. Idéal pour une soirée spéciale — si le budget le permet, c'est l'expérience ultime à Toulouse.
+        </div>
+        <div class="card-footer">
+          <a class="btn-maps" href="https://www.google.com/maps/search/Les+Jardins+de+l+Opera+Place+du+Capitole+Toulouse" target="_blank" rel="noopener noreferrer">📍 Google Maps</a>
+          <a class="btn-maps" href="tel:+33561230776" style="background:#7B9EBB;">📞 05 61 23 07 76</a>
+          <a class="btn-reserve" href="https://www.thefork.fr/restaurant/les-jardins-de-l-opera-r205771" target="_blank" rel="noopener noreferrer">🍴 Réserver sur TheFork</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TIPS -->
+<div class="tips-section">
+  <div class="tips-inner">
+    <div class="tips-title">Conseils pratiques</div>
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-icon">📞</div>
+        <h4>Réserver à l'avance</h4>
+        <p>Les Jardins de l'Opéra et Au Pois Gourmand affichent souvent complet le week-end. Réserver 3–5 jours avant sur TheFork ou par téléphone.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🕐</div>
+        <h4>Timing local</h4>
+        <p>Le déjeuner (12h–14h) est le vrai repas de la journée dans le Sud-Ouest. Les meilleures formules et prix sont toujours au déjeuner.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🍷</div>
+        <h4>Le vin local</h4>
+        <p>Demande un Fronton (cépage Négrette, AOC local) ou un Gaillac. Ce sont les vins de la région — pas touristiques, pas chers, excellents.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">💡</div>
+        <h4>L'astuce budget</h4>
+        <p>Au Pois Gourmand : menu midi à 29€ pour une expérience gastronomique. Le meilleur rapport qualité-prix de la sélection.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="back-bar">
+  
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVIGATION PRINCIPALE (bottom bar)
+════════════════════════════════════════════════════════════ -->
+<nav class="app-nav">
+  <button class="app-nav-btn active" onclick="showAppSection('section-voyage', this)" aria-label="Section Voyage">
+    <span class="icon">🗺</span>Voyage
+  </button>
+  <button class="app-nav-btn" onclick="showAppSection('section-restos', this)" aria-label="Section Restaurants">
+    <span class="icon">🍽</span>Restos
+  </button>
+</nav>
+
+
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  const map = { overview: 0, day1: 1, day2: 2, day3: 3, day4: 4, day5: 5, tips: 6 };
+  btns[map[id]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleStory(btn) {
+  const drawer = btn.nextElementSibling;
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open');
+  btn.textContent = isOpen ? '+ Histoire du lieu' : '– Fermer';
+  if (!isOpen) {
+    btn.textContent = btn.textContent.replace('+ Histoire du lieu', '– Fermer').replace('+ À savoir', '– Fermer').replace('+ Anecdote', '– Fermer');
+    btn.textContent = '– Fermer';
+  }
+}
+
+// ── Navigation entre sections principales ──
+function showAppSection(id, btn) {
+  document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.app-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Navigation jours dans la section Voyage ──
+function showSection(id) {
+  const container = document.getElementById('section-voyage');
+  container.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
+  container.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  const map = { overview: 0, day1: 1, day2: 2, day3: 3, day4: 4, day5: 5, tips: 6 };
+  const btns = container.querySelectorAll('.nav-btn');
+  if (btns[map[id]]) btns[map[id]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Story drawers ──
+function toggleStory(btn) {
+  const drawer = btn.nextElementSibling;
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open');
+  btn.textContent = isOpen ? '+ Histoire du lieu' : '– Fermer';
+}
+</script>
+</body>
+</html>
