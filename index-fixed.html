@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" id="meta-description" content="">
+<meta property="og:title" id="meta-og-title" content="">
+<meta property="og:description" id="meta-og-description" content="">
+<meta property="og:type" content="website">
+<meta property="og:url" id="meta-og-url" content="">
+<title id="page-title">Voyage</title>
+<link rel="icon" id="page-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>✈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,500&display=swap" rel="stylesheet">
+
+
+<!-- =====================================================================
+  BLOC 1 — DONNEES DU VOYAGE
+  ======================================================================
+  EDITEZ UNIQUEMENT CE BLOC pour changer le contenu du voyage.
+  - Ne touchez pas aux blocs STYLE et LOGIQUE.
+  - Une donnee = un seul endroit dans ce fichier (DRY).
+  - IDs stables : day1..dayN, resto-N — ne jamais renommer.
+
+  STRUCTURE DES STEPS (programme par jour) :
+    { id, time, type, name, description, is_optional?,
+      practical: { price?, opening?, address?, phone?,
+                   maps_url?, booking_url?, coords? },
+      tips?, reservation_required? }
+
+  TYPES DISPONIBLES : visite | musee | restaurant | cafe |
+                      balade | transport | spectacle | shopping
+
+  STRUCTURE DES RESTOS :
+    { id, accentColor, category, name, price_range, description,
+      address, phone?, maps_url?, booking_url?, opening,
+      reservation_required?, tags[], verdict, used_on_days[] }
+  ===================================================================== -->
+<script id="TRIP_DATA">
+const TRIP = {
+
+  /* ── Meta voyage ──────────────────────────────────────────────── */
+  meta: {
+    title:    "Toulouse & Carcassonne",
+    tagline:  "Notre voyage · Printemps 2026",
+    subtitle: "5 jours en amoureux dans le Sud-Ouest",
+    coverEmoji: "🌹",
+    tripStart: "2026-04-20",           /* FORMAT: YYYY-MM-DD */
+    googlePhotosUrl: "",               /* Coller ici le lien Google Photos */
+  },
+
+  /* ── Hotel ────────────────────────────────────────────────────── */
+  hotel: {
+    name:       "",                    /* Ex: "Hotel Albert 1er ***" */
+    address:    "",
+    phone:      "",
+    phoneLabel: "",
+    mapsUrl:    "",
+    itinUrl:    "",
+    checkin:    "15:00",
+    checkout:   "11:00",
+  },
+
+  /* ── Budget ───────────────────────────────────────────────────── */
+  budget: [
+    { amount: "~300", label: "Restaurants (4j)" },
+    { amount: "~45",  label: "Musees & visites" },
+    { amount: "~65",  label: "Transports" },
+    { amount: "~410", label: "Total 2 pers." },
+  ],
+  budgetNote: "BUDGET INDICATIF HORS HOTEL",
+
+  /* ── Infos pratiques ──────────────────────────────────────────── */
+  pratique: [
+    { emoji: "🚇", title: "Transports",    text: "Metro ligne A et B — ticket 1,80€, carnet recommande. Velo VeloToulouse en libre-service partout." },
+    { emoji: "🚶", title: "A pied",        text: "Tout le centre historique est faisable a pied — c'est le meilleur mode de decouverte." },
+    { emoji: "🚨", title: "Urgences",      text: "SAMU : 15 · Police : 17 · Pompiers : 18 · Numero europeen : 112" },
+    { emoji: "🌤", title: "Meteo",         text: "Printemps ideal. Veste legere le soir. Risque d'averse en avril." },
+    { emoji: "🎫", title: "Pass Musees",   text: "Pass Toulouse Metropole ~25€ — acces musees municipaux. Rentable des 3 visites." },
+    { emoji: "🛍", title: "Souvenirs",     text: "Violettes de Toulouse, saucisson, cassoulet en bocal, vin de Fronton." },
+  ],
+
+  /* ── Liens utiles (remplacement de reservations fixes) ─────────── */
+  usefulLinks: [
+    { label: "SNCF — Toulouse → Carcassonne", url: "https://www.oui.sncf" },
+    { label: "Tisseo — Transports Toulouse",   url: "https://www.tisseo.fr" },
+    { label: "L'Air de Famille — Reservation", url: "https://airdefamilletoulouse.fr/" },
+  ],
+
+  /* ====================================================================
+     JOURS DU PROGRAMME
+     ─────────────────────────────────────────────────────────────────
+     Champs editoriaux (specifiques au site, absents du JSON source) :
+       chipLabel, bgNum, color
+       culture { tag, title, body, facts[] }
+       mapSrc, mapLabel, mapSub, mapLink
+       trainBanner? { label, info, badge }
+       freeDay?, freeDayMessage?
+
+     Champs programme (issus du JSON source) :
+       steps[] { id, time, duration_min, type, name, description,
+                 is_optional?, reservation_required?,
+                 practical: { price?, opening?, address?,
+                              phone?, maps_url?, booking_url? },
+                 tips? }
+     ==================================================================== */
+  days: [
+
+    /* ── JOUR 1 — Lundi ── */
+    {
+      id: "day1", chipLabel: "Jour 1",
+      label: "Lundi · Toulouse",
+      title: "Coeur de la Ville Rose",
+      subtitle: "Architecture romane, histoire occitane & premiere soiree",
+      bgNum: "01",
+      color: "#C2410C",
+
+      culture: {
+        tag: "Histoire & Architecture",
+        title: "La Ville Rose — pourquoi cette couleur ?",
+        body: "Toulouse doit sa teinte chaude a la brique romaine. La region manquait de pierre calcaire mais disposait d'une argile exceptionnelle. Au coucher du soleil, la ville entiere semble s'embraser.",
+        facts: [
+          { label: "Fondee en",   value: "~300 av. J.-C." },
+          { label: "Capitale de", value: "l'Occitanie" },
+          { label: "Population",  value: "480 000 hab." },
+          { label: "Fleuve",      value: "La Garonne" },
+        ],
+      },
+
+      mapSrc:   "https://www.openstreetmap.org/export/embed.html?bbox=1.4300%2C43.5940%2C1.4520%2C43.6120&layer=mapnik&marker=43.6060%2C1.4449",
+      mapLabel: "Itineraire Jour 1 — depuis l'Hotel Albert 1er",
+      mapSub:   "Hotel → Saint-Sernin → Augustins → Pont Neuf → Jardin Royal → Capitole",
+      mapLink:  "https://www.google.com/maps/dir/8+Rue+Rivals+Toulouse/Basilique+Saint-Sernin+Toulouse/Musee+des+Augustins+Toulouse/Pont+Neuf+Toulouse/Galerie+Chateau+Eau+Toulouse/Jardin+Royal+Toulouse/Place+du+Capitole+Toulouse",
+
+      steps: [
+        {
+          id: "d1-s0", time: "09:50", duration_min: 6,
+          type: "transport",
+          name: "Depart Hotel Albert 1er → Saint-Sernin",
+          description: "6 min a pied vers le nord par la rue du Taur. L'hotel est idealement place : Saint-Sernin est litteralement au bout de la rue.",
+          practical: {
+            price: "Gratuit",
+            address: "8 Rue Rivals, 31000 Toulouse",
+            maps_url: "https://www.google.com/maps/dir/8+Rue+Rivals+Toulouse/Basilique+Saint-Sernin+Toulouse",
+          },
+          tips: "Remonter la Rue du Taur vers le nord — la basilique apparait au bout de la rue, c'est le parcours le plus beau.",
+        },
+        {
+          id: "d1-s1", time: "10:00", duration_min: 90,
+          type: "visite",
+          name: "Basilique Saint-Sernin",
+          description: "Joyau roman classe UNESCO. L'un des plus grands edifices romans du monde, avec son clocher octogonal de 64 metres. Reliques, voutes majestueuses.",
+          story: "Construite a partir du XIe siecle, la basilique Saint-Sernin est dediee au premier eveque martyr de Toulouse. Elle fut pendant des siecles l'une des etapes majeures du chemin de Saint-Jacques-de-Compostelle. La legende dit que Saturnin fut traine par un taureau qui lui ota la vie.",
+          storyLabel: "+ Histoire du lieu",
+          practical: {
+            price: "Entree libre (exterieur) · 3€ crypte",
+            opening: "Lun-Ven 8h30-18h · Sam-Dim 10h-17h30",
+            address: "Place Saint-Sernin, 31000 Toulouse",
+            phone: "+33 5 61 21 80 45",
+            maps_url: "https://www.google.com/maps/search/Basilique+Saint-Sernin+Toulouse",
+          },
+          tips: "Observer le chevet du 11e s. depuis l'exterieur — la partie la plus ancienne du monument.",
+        },
+        {
+          id: "d1-s2", time: "11:45", duration_min: 16,
+          type: "transport",
+          name: "A pied vers les Augustins · 16 min",
+          description: "Descendre la Rue du Taur vers le sud — la rue commercante historique. En chemin, Pastel et Sarrasin pour noter l'adresse du dejeuner.",
+          practical: {
+            price: "Gratuit",
+            maps_url: "https://www.google.com/maps/dir/Basilique+Saint-Sernin+Toulouse/Musee+des+Augustins+Toulouse",
+          },
+        },
+        {
+          id: "d1-s3", time: "12:00", duration_min: 90,
+          type: "musee",
+          name: "Musee des Augustins",
+          description: "Dans un couvent gothique du XIVe siecle — sculptures medievales et peintures locales. Le cloitre est a couper le souffle.",
+          story: "Le couvent des Augustins fut fonde en 1309 sous la protection du pape Clement V. A la Revolution francaise, il fut transforme en depot d'oeuvres confisquees, puis en musee. Ses cloitres gothiques abritent une collection unique de sculptures romanes rescapees des demolitions revolutionnaires.",
+          storyLabel: "+ Histoire du lieu",
+          practical: {
+            price: "5€",
+            opening: "Lun/Jeu/Ven 12h-18h · Sam/Dim 10h-18h",
+            address: "21 Rue de Metz, 31000 Toulouse",
+            phone: "+33 5 61 22 21 82",
+            maps_url: "https://www.google.com/maps/search/Musee+des+Augustins+21+Rue+de+Metz+Toulouse",
+          },
+          tips: "Ne pas manquer la salle romane (12e s.) — les chapiteaux histories sont les pieces maitresses.",
+        },
+        {
+          id: "d1-s4", time: "13:45", duration_min: 45,
+          type: "restaurant",
+          name: "Pastel et Sarrasin",
+          description: "Rue du Taur, 5 min des Augustins. Galettes de sarrasin bio, terrasse ensoleillee. Sous 15€/pers. Tres bien note.",
+          practical: {
+            price: "~25-30€ pour deux",
+            opening: "Tj sauf lundi",
+            address: "Rue du Taur, Toulouse",
+            maps_url: "https://www.google.com/maps/search/Pastel+et+Sarrasin+Toulouse+Rue+du+Taur",
+          },
+          tips: "Pas de reservation necessaire. En semaine c'est calme a 13h45.",
+        },
+        {
+          id: "d1-s5", time: "14:45", duration_min: 11,
+          type: "transport",
+          name: "A pied vers le Pont Neuf · 11 min",
+          description: "Descendre la Rue de Metz vers l'ouest jusqu'a la Garonne. La vue sur les berges commence bien avant le pont.",
+          practical: {
+            price: "Gratuit",
+            maps_url: "https://www.google.com/maps/dir/Musee+des+Augustins+Toulouse/Pont+Neuf+Toulouse",
+          },
+        },
+        {
+          id: "d1-s6", time: "15:00", duration_min: 45,
+          type: "balade",
+          name: "Pont Neuf & quais de la Garonne",
+          description: "Le plus vieux pont de Toulouse (XVIe siecle, malgre son nom !). Vue la plus emblematique sur la ville rose. Parfait pour une flanerie romantique.",
+          story: "Le Pont Neuf de Toulouse est en realite le plus ancien pont de la ville, construit entre 1544 et 1632. Son nom s'opposait aux vieux ponts medievaux en bois. Il est remarquable pour ses sept arches inegales, concues pour resister aux crues brutales de la Garonne.",
+          storyLabel: "+ Histoire du lieu",
+          practical: {
+            price: "Gratuit",
+            maps_url: "https://www.google.com/maps/search/Pont+Neuf+Toulouse",
+          },
+          tips: "Traverser le pont et regarder en amont vers le coucher de soleil — c'est la photo iconique de Toulouse.",
+        },
+        {
+          id: "d1-s7", time: "15:50", duration_min: 40,
+          type: "musee",
+          name: "Galerie du Chateau d'Eau",
+          is_optional: true,
+          description: "Juste apres le pont, rive droite. Ancienne tour hydraulique du XIXe siecle convertie en galerie photo. L'une des plus belles galeries de photographie de France. ~45 min.",
+          practical: {
+            price: "3€",
+            opening: "Mer-Dim 11h-18h · Ferme Lun-Mar",
+            address: "1 Place Laganne, 31300 Toulouse",
+            maps_url: "https://www.google.com/maps/search/Galerie+Chateau+Eau+Toulouse+Place+Laganne",
+          },
+          tips: "Optionnel mais inoubliable — la structure interieure de la tour vaut le detour a elle seule.",
+        },
+        {
+          id: "d1-s8", time: "16:45", duration_min: 20,
+          type: "transport",
+          name: "A pied vers le Jardin Royal · 20 min",
+          description: "Remonter les quais vers l'est, puis traverser en direction du Jardin Royal par les ruelles du quartier Saint-Etienne.",
+          practical: {
+            price: "Gratuit",
+            maps_url: "https://www.google.com/maps/dir/Pont+Neuf+Toulouse/Jardin+Royal+Toulouse",
+          },
+        },
+        {
+          id: "d1-s9", time: "17:10", duration_min: 50,
+          type: "balade",
+          name: "Jardin Royal & Grand Rond",
+          description: "L'elegant jardin a la francaise du XVIIe siecle — havre de paix avant le diner. Fontaines, allees geometriques, ambiance romantique.",
+          practical: {
+            price: "Gratuit",
+            opening: "Tous les jours 7h-21h",
+            maps_url: "https://www.google.com/maps/search/Jardin+Royal+Toulouse+Grand+Rond",
+          },
+          tips: "Faire le tour complet du Grand Rond — le bassin central est le coeur du jardin.",
+        },
+        {
+          id: "d1-s10", time: "18:05", duration_min: 15,
+          type: "transport",
+          name: "A pied vers le Capitole · 15 min",
+          description: "Remonter vers le nord par la Rue de la Pomme ou la Rue Saint-Antoine du T — quartier vivant en fin d'apres-midi.",
+          practical: {
+            price: "Gratuit",
+            maps_url: "https://www.google.com/maps/dir/Jardin+Royal+Toulouse/Place+du+Capitole+Toulouse",
+          },
+        },
+        {
+          id: "d1-s11", time: "19:30", duration_min: 120,
+          type: "restaurant",
+          name: "Le Bibent",
+          reservation_required: true,
+          description: "Place du Capitole, ecrin Napoleon III classe MH. Cassoulet, foie gras, profiteroles. L'institution toulousaine. 4.1/5 · 6130 avis.",
+          practical: {
+            price: "€€€ — ~80-120€ pour deux",
+            opening: "Mer-Sam + Mar soir",
+            address: "5 Place du Capitole, Toulouse",
+            phone: "+33 5 61 23 07 03",
+            maps_url: "https://www.google.com/maps/search/Le+Bibent+5+Place+du+Capitole+Toulouse",
+            booking_url: "https://www.thefork.fr/restaurant/bibent-r205773",
+          },
+          tips: "Reserver pour eviter l'attente. Cadre epoustouflant.",
+        },
+      ],
+    },
+
+    /* ── JOUR 2 — Mardi ── */
+    {
+      id: "day2", chipLabel: "Jour 2",
+      label: "Mardi · Toulouse",
+      title: "Marches, Capitole & Haute Cuisine",
+      subtitle: "L'art de vivre toulousain dans toute sa splendeur",
+      bgNum: "02",
+      color: "#7C3AED",
+
+      culture: {
+        tag: "Gastronomie occitane",
+        title: "Toulouse, capitale de la gastronomie du Sud-Ouest",
+        body: "La saucisse de Toulouse, le foie gras, le canard confit, le cassoulet — la gastronomie locale porte en elle l'ame d'une region qui a toujours su prendre le temps de vivre.",
+        facts: [
+          { label: "Specialite n1", value: "Cassoulet & Saucisse" },
+          { label: "Marche phare",  value: "Victor Hugo" },
+          { label: "Vin regional",  value: "Fronton (AOC)" },
+          { label: "Chef etoile",   value: "Steph. Tournie (Jardins)" },
+        ],
+      },
+
+      mapSrc:   "https://www.openstreetmap.org/export/embed.html?bbox=1.4320%2C43.5990%2C1.4520%2C43.6110&layer=mapnik&marker=43.6060%2C1.4449",
+      mapLabel: "Itineraire Jour 2 — depuis l'Hotel Albert 1er",
+      mapSub:   "Hotel (3 min) → Victor Hugo → Capitole → Terrasse apero",
+      mapLink:  "https://www.google.com/maps/dir/8+Rue+Rivals+Toulouse/Marche+Victor+Hugo+Toulouse/Place+du+Capitole+Toulouse",
+
+      steps: [
+        {
+          id: "d2-s0", time: "08:55", duration_min: 3,
+          type: "transport",
+          name: "Depart Hotel Albert 1er → Marche Victor Hugo",
+          description: "3 min a pied — le marche est literalement au coin de la rue. Tourner a gauche en sortant de l'hotel, remonter vers la Place Victor Hugo.",
+          practical: {
+            price: "Gratuit",
+            address: "8 Rue Rivals, 31000 Toulouse",
+            maps_url: "https://www.google.com/maps/dir/8+Rue+Rivals+Toulouse/Marche+Victor+Hugo+Toulouse",
+          },
+          tips: "Partir avant 9h pour voir les producteurs arriver. Le marche est a son apogee entre 9h et 11h.",
+        },
+        {
+          id: "d2-s1", time: "09:00", duration_min: 90,
+          type: "balade",
+          name: "Marche Victor Hugo",
+          description: "Le marche couvert le plus emblematique. Fromages, charcuteries, produits regionaux. Ambiance incroyable le matin. Arrive tot !",
+          story: "Les marches du midi de la France ont une particularite delicieuse : au premier etage du marche Victor Hugo, plusieurs restaurants proposent des dejeuners depuis les annees 1950. La coutume veut qu'on achete ses ingredients en bas puis qu'on monte les faire cuisiner. Une tradition orale dit que c'est la que les vieilles familles toulousaines se retrouvent tous les samedis.",
+          storyLabel: "+ Anecdote de voyage",
+          practical: {
+            price: "Gratuit (marche)",
+            opening: "Mar-Dim 6h-14h · Ferme lundi",
+            address: "Place Victor Hugo, Toulouse",
+            maps_url: "https://www.google.com/maps/search/Marche+Victor+Hugo+Toulouse",
+          },
+        },
+        {
+          id: "d2-s2", time: "10:45", duration_min: 6,
+          type: "transport",
+          name: "A pied vers le Capitole · 6 min",
+          description: "5 min a pied vers le sud-ouest par la Rue Lafayette ou la Rue d'Alsace-Lorraine — rues commerçantes vivantes.",
+          practical: {
+            price: "Gratuit",
+            maps_url: "https://www.google.com/maps/dir/Marche+Victor+Hugo+Toulouse/Place+du+Capitole+Toulouse",
+          },
+        },
+        {
+          id: "d2-s3", time: "11:00", duration_min: 60,
+          type: "balade",
+          name: "Place du Capitole",
+          description: "Le coeur battant de Toulouse. Immense place en brique rose baroque, mairie ornee d'une croix occitane au sol.",
+          story: "Le Capitole tire son nom des Capitouls — les magistrats qui gouvernaient Toulouse au Moyen-Age. Ces 12 hommes elus avaient un pouvoir considerable et meme le droit de rendre la justice. Le batiment actuel date du XVIIIe siecle mais la tradition de gouvernance locale remonte a 1120.",
+          storyLabel: "+ Histoire du lieu",
+          practical: {
+            price: "Gratuit",
+            opening: "24h/24",
+            address: "Place du Capitole, Toulouse",
+            maps_url: "https://www.google.com/maps/search/Place+du+Capitole+Toulouse",
+          },
+          tips: "Penetrer dans la cour interieure — l'escalier et la salle des Illustres sont accessibles gratuitement.",
+        },
+        {
+          id: "d2-s4", time: "12:30", duration_min: 90,
+          type: "restaurant",
+          name: "Le Bouillon Capitole",
+          description: "Face au Capitole. Plats des 1,90€ : oeufs mimosa, cassoulet. Service continu 7j/7 sans reservation.",
+          practical: {
+            price: "€ — ~25-35€ pour deux",
+            opening: "7j/7 · 11h30-23h30",
+            address: "1 Place du Capitole, Toulouse",
+            maps_url: "https://www.google.com/maps/search/Bouillon+Capitole+Place+du+Capitole+Toulouse",
+          },
+          tips: "File courte qui avance vite. Ideal pour un dejeuner rapide avant l'apres-midi.",
+        },
+        {
+          id: "d2-s5", time: "18:00", duration_min: 60,
+          type: "balade",
+          name: "Terrasse Capitole + apero",
+          description: "S'installer en terrasse au soleil couchant avec un verre de Fronton (le vin local). Diner leger dans un bar a tapas du quartier.",
+          practical: {
+            price: "€€ — 30-40€ pour deux",
+            address: "Place du Capitole, Toulouse",
+            maps_url: "https://www.google.com/maps/search/Place+du+Capitole+Toulouse+terrasse",
+          },
+        },
+      ],
+    },
+
+    /* ── JOUR 3 — Mercredi ── */
+    {
+      id: "day3", chipLabel: "Jour 3",
+      label: "Mercredi · Carcassonne",
+      title: "Echappee Medievale — Carcassonne",
+      subtitle: "Aller-retour en train · La plus grande forteresse medievale d'Europe",
+      bgNum: "03",
+      color: "#1D4ED8",
+
+      trainBanner: {
+        label: "Train depuis Toulouse Matabiau",
+        info:  "Depart 9h15 · Arrivee ~10h15 · ~20-25€ AR",
+        badge: "Reserver sur oui.sncf",
+      },
+
+      culture: {
+        tag: "Carcassonne — mille ans d'histoire",
+        title: "La forteresse que tout le monde a voulu garder",
+        body: "Visigoth, Sarrasin, Croise, Cathare, Capetien — sa double enceinte de 52 tours est l'une des mieux conservees d'Europe. Viollet-le-Duc la sauva au XIXe siecle d'une demolition programmee.",
+        facts: [
+          { label: "Classee UNESCO", value: "1997" },
+          { label: "Remparts",       value: "3 km · double enceinte" },
+          { label: "Tours",          value: "52 tours" },
+          { label: "Restaurateur",   value: "Viollet-le-Duc (1849)" },
+        ],
+      },
+
+      mapSrc:   "https://www.openstreetmap.org/export/embed.html?bbox=2.3420%2C43.2040%2C2.3720%2C43.2170&layer=mapnik&marker=43.2093%2C2.3624",
+      mapLabel: "Carcassonne — Cite medievale & Canal du Midi",
+      mapSub:   "Gare → Chateau → Canal du Midi",
+      mapLink:  "https://www.google.com/maps/dir/Gare+de+Carcassonne/Chateau+Comtal+Carcassonne/Canal+du+Midi+Carcassonne",
+
+      steps: [
+        {
+          id: "d3-s1", time: "08:30", duration_min: 45,
+          type: "transport",
+          name: "Gare Matabiau → train 9h15",
+          description: "Train direct Toulouse → Carcassonne. Duree ~1h. Reserver AR sur oui.sncf.",
+          practical: {
+            price: "~20-25€ AR",
+            address: "Gare de Toulouse-Matabiau, Toulouse",
+            booking_url: "https://www.oui.sncf",
+          },
+        },
+        {
+          id: "d3-s2", time: "10:30", duration_min: 150,
+          type: "visite",
+          name: "Chateau Comtal & les Remparts",
+          description: "Remparts exterieurs gratuits, chateau visite payante. La vue sur la campagne est epoustouflante. Prevois 2-3h.",
+          story: "Au debut du XIIIe siecle, Carcassonne fut l'epicentre de la Croisade des Albigeois — une guerre sainte lancee par le pape Innocent III contre les Cathares, juges heretiques. Les Cathares pronaient la pauvrete, le vegetarisme et le pacifisme. En 1209, Simon de Montfort prit la cite sans combattre. Le vicomte Trencavel mourut mysterieusement en prison peu apres.",
+          storyLabel: "+ Les Cathares : une histoire tragique",
+          practical: {
+            price: "Remparts libres · Chateau 10€",
+            opening: "10h-18h",
+            address: "Cite de Carcassonne, 11000 Carcassonne",
+            maps_url: "https://www.google.com/maps/search/Chateau+Comtal+Carcassonne",
+          },
+          tips: "Arriver tot — tres frequente en milieu de journee. Preferer les ruelles secondaires.",
+        },
+        {
+          id: "d3-s3", time: "13:00", duration_min: 60,
+          type: "restaurant",
+          name: "La Demeure du Cassoulet",
+          description: "Dans la Cite medievale. Cassoulet maison copieux, cuisine 100% locale. Tres bien note sur Google & Tripadvisor.",
+          story: "Le grand debat culinaire regional : quel est le vrai cassoulet ? Castelnaudary revendique l'invention, Carcassonne utilise du mouton et de la perdrix en saison, Toulouse privilegie la saucisse locale. L'Academie du Cassoulet de Castelnaudary s'est auto-proclamee arbitre — mais les Toulousains et Carcassonnais ignorent souverainement ses decrets. Goute les deux et decide toi-meme.",
+          storyLabel: "+ Cassoulet de Carcassonne vs Toulouse",
+          practical: {
+            price: "€€ — ~40-50€ pour deux",
+            maps_url: "https://www.google.com/maps/search/La+Demeure+du+Cassoulet+Carcassonne",
+          },
+        },
+        {
+          id: "d3-s4", time: "15:30", duration_min: 90,
+          type: "balade",
+          name: "Canal du Midi",
+          description: "Le chef-d'oeuvre de Riquet (1681). Balade sous les platanes centenaires ou mini-croisiere d'1h. Classe UNESCO.",
+          story: "Pierre-Paul Riquet etait un collecteur de l'impot sur le sel qui revait de relier l'Atlantique a la Mediterranee pour eviter le dangereux detroit de Gibraltar. Il investit toute sa fortune personnelle dans ce projet. Le canal fait 240 km, compte 91 ecluses, et employa jusqu'a 12 000 ouvriers — dont 600 femmes. Riquet mourut 8 mois avant l'inauguration en 1681.",
+          storyLabel: "+ L'histoire folle du Canal du Midi",
+          practical: {
+            price: "Gratuit / Mini-croisiere ~10€",
+            maps_url: "https://www.google.com/maps/search/Canal+du+Midi+Carcassonne",
+          },
+        },
+        {
+          id: "d3-s5", time: "17:30", duration_min: 60,
+          type: "transport",
+          name: "Retour train 18h → Toulouse",
+          description: "Train retour Carcassonne → Toulouse Matabiau. Duree ~1h. Soiree libre en terrasse.",
+          practical: {
+            price: "Inclus dans le billet AR",
+          },
+        },
+      ],
+    },
+
+    /* ── JOUR 4 — Vendredi ── */
+    {
+      id: "day4", chipLabel: "Jour 4",
+      label: "Vendredi · Toulouse",
+      title: "Musees, Canal & Shopping",
+      subtitle: "Detente, culture et gastronomie en bord de Garonne",
+      bgNum: "04",
+      color: "#059669",
+
+      culture: {
+        tag: "Toulouse scientifique",
+        title: "La ville de l'espace et de l'aeronautique",
+        body: "Toulouse est la capitale europeenne de l'aeronautique. Airbus y est ne, le Concorde y a ete assemble. Une ville qui a toujours regarde vers le ciel tout en restant profondement ancree dans son terroir.",
+        facts: [
+          { label: "Airbus",      value: "Siege mondial" },
+          { label: "Concorde",    value: "Dernier vol 2003" },
+          { label: "Universite",  value: "Fondee en 1229" },
+          { label: "Canal du Midi", value: "Classe UNESCO 1996" },
+        ],
+      },
+
+      mapSrc:   "https://www.openstreetmap.org/export/embed.html?bbox=1.4050%2C43.5900%2C1.4600%2C43.6150&layer=mapnik&marker=43.6060%2C1.4449",
+      mapLabel: "Itineraire Jour 4 — Hotel → Museum → Garonne → Canal → Centre",
+      mapSub:   "Hotel → Velo → Museum → Jardin des Plantes → Velo → Au Pois Gourmand → Canal → Rue St-Rome",
+      mapLink:  "https://www.google.com/maps/dir/8+Rue+Rivals+Toulouse/Museum+de+Toulouse/Au+Pois+Gourmand+Toulouse/Canal+du+Midi+Toulouse/Rue+Saint-Rome+Toulouse",
+
+      steps: [
+        {
+          id: "d4-s0", time: "09:45", duration_min: 5,
+          type: "transport",
+          name: "Depart Hotel → station VeloToulouse",
+          description: "La station VeloToulouse Place Victor Hugo est a 2 min de l'hotel. Prendre 2 velos pour la journee — abonnement journee 3€/velo, trajet illimite jusqu'a 30 min.",
+          practical: {
+            price: "3€/velo/jour",
+            address: "Station VeloToulouse Place Victor Hugo, Toulouse",
+            maps_url: "https://www.google.com/maps/search/VeloToulouse+Place+Victor+Hugo+Toulouse",
+            booking_url: "https://www.velo.toulouse.fr",
+          },
+          tips: "Payer par carte bancaire directement sur la borne. Prendre les velos avant 10h pour eviter la queue.",
+        },
+        {
+          id: "d4-s1", time: "09:50", duration_min: 12,
+          type: "transport",
+          name: "Velo → Museum de Toulouse · 12 min",
+          description: "Descendre l'Allee Jules Guesde vers le sud — piste cyclable continue depuis le centre. 1,8 km, plat, ombrage.",
+          practical: {
+            price: "Inclus VeloToulouse",
+            maps_url: "https://www.google.com/maps/dir/Place+Victor+Hugo+Toulouse/Museum+de+Toulouse",
+          },
+          tips: "Rendre les velos a la station devant le Museum (Allee Jules Guesde) — il y en a une juste devant.",
+        },
+        {
+          id: "d4-s2", time: "10:00", duration_min: 120,
+          type: "musee",
+          name: "Museum de Toulouse",
+          description: "L'un des plus grands museums d'histoire naturelle de France. Collections geologiques, prehistoriques et ethnographiques dans un magnifique batiment Art Nouveau.",
+          story: "Le Museum possede l'un des plus importants ossements de dinosaures d'Europe — des specimens rapportes des expeditions francaises en Amerique du Sud au XIXe siecle. Mais son tresor le plus meconnu est sa collection ethnographique : des objets collectes par des explorateurs toulousains entre 1820 et 1920, veritable fenetre sur des civilisations que le monde occidental decouvrait alors.",
+          storyLabel: "+ Le tresor cache du musee",
+          practical: {
+            price: "5€",
+            opening: "Mar-Dim 10h-18h · Ferme lundi",
+            address: "35 Allee Jules Guesde, Toulouse",
+            phone: "+33 5 67 73 84 84",
+            maps_url: "https://www.google.com/maps/search/Museum+de+Toulouse+35+Allee+Jules+Guesde",
+          },
+        },
+        {
+          id: "d4-s3", time: "12:05", duration_min: 15,
+          type: "balade",
+          name: "Jardin des Plantes · pause avant le velo",
+          description: "Juste a cote du Museum — jardins botaniques classees, fontaines, voliere. Pause ideale pour se poser avant de reprendre les velos vers la Garonne.",
+          practical: {
+            price: "Gratuit",
+            opening: "Tous les jours 8h-20h",
+            address: "31 Allee Jules Guesde, Toulouse",
+            maps_url: "https://www.google.com/maps/search/Jardin+des+Plantes+Toulouse",
+          },
+          tips: "La cascade artificielle au fond du jardin est un secret bien garde des Toulousains.",
+        },
+        {
+          id: "d4-s4", time: "12:20", duration_min: 5,
+          type: "transport",
+          name: "Station VeloToulouse · reprendre les velos",
+          description: "Reprendre 2 velos a la station Jardin des Plantes pour rejoindre Au Pois Gourmand. Trajet 2,5 km le long de la Garonne — 10 min de velo.",
+          practical: {
+            price: "Inclus VeloToulouse",
+            maps_url: "https://www.google.com/maps/search/VeloToulouse+Jardin+des+Plantes+Toulouse",
+          },
+        },
+        {
+          id: "d4-s5", time: "12:25", duration_min: 10,
+          type: "transport",
+          name: "Velo le long de la Garonne → Au Pois Gourmand · 10 min",
+          description: "Longer les berges de la Garonne vers le nord. Piste cyclable continue sur les quais — le trajet est aussi beau que la destination. Rendre les velos a la station Rue de la Garonne.",
+          practical: {
+            price: "Inclus VeloToulouse",
+            maps_url: "https://www.google.com/maps/dir/Jardin+des+Plantes+Toulouse/Au+Pois+Gourmand+Toulouse",
+          },
+          tips: "Vue imprenable sur la Garonne depuis les berges — penser a lever les yeux au lieu de regarder le GPS.",
+        },
+        {
+          id: "d4-s6", time: "13:00", duration_min: 90,
+          type: "restaurant",
+          name: "Au Pois Gourmand",
+          reservation_required: true,
+          description: "En bord de Garonne, terrasse panoramique. Menu marche midi a 29€ = meilleur rapport qualite-prix de Toulouse. Guide Michelin · 4.6/5 · #21/6905 avis.",
+          practical: {
+            price: "€€€ — ~58€ pour deux (midi)",
+            opening: "Lun-Ven midi · Jeu-Sam soir · Ferme Dim",
+            address: "3 rue Emile Heybrard, 31300 Toulouse",
+            phone: "+33 5 34 36 42 00",
+            maps_url: "https://www.google.com/maps/search/Au+Pois+Gourmand+3+rue+Emile+Heybrard+Toulouse",
+            booking_url: "https://www.thefork.fr/restaurant/au-pois-gourmand-r775577",
+          },
+          tips: "Reserver la terrasse face au fleuve — l'experience ultime. Menu midi = exception gastronomique a prix raisonnable.",
+        },
+        {
+          id: "d4-s7", time: "14:45", duration_min: 5,
+          type: "transport",
+          name: "Station VeloToulouse · reprendre les velos",
+          description: "Station a 2 min a pied du restaurant. Reprendre 2 velos pour rejoindre le Port de l'Embouchure, point de depart du Canal du Midi.",
+          practical: {
+            price: "Inclus VeloToulouse",
+            maps_url: "https://www.google.com/maps/search/VeloToulouse+Saint+Cyprien+Toulouse",
+          },
+        },
+        {
+          id: "d4-s8", time: "14:50", duration_min: 15,
+          type: "transport",
+          name: "Velo → Port de l'Embouchure · 15 min",
+          description: "Remonter vers le nord par les quais, traverser le Pont Saint-Pierre, rejoindre le Canal du Midi. 2,5 km de velo — les berges sont magnifiques.",
+          practical: {
+            price: "Inclus VeloToulouse",
+            maps_url: "https://www.google.com/maps/dir/Au+Pois+Gourmand+Toulouse/Port+Embouchure+Canal+du+Midi+Toulouse",
+          },
+        },
+        {
+          id: "d4-s9", time: "15:00", duration_min: 75,
+          type: "balade",
+          name: "Canal du Midi — Port de l'Embouchure",
+          description: "Le chef-d'oeuvre de Riquet (1681). Balade a velo sous les platanes centenaires — le canal commence ici, a Toulouse. Aller-retour 3 km ou croisiere d'1h depuis le port.",
+          story: "Pierre-Paul Riquet etait un collecteur de l'impot sur le sel qui revait de relier l'Atlantique a la Mediterranee. Il investit toute sa fortune personnelle dans ce projet. Le canal fait 240 km, compte 91 ecluses, et employa jusqu'a 12 000 ouvriers — dont 600 femmes. Riquet mourut 8 mois avant l'inauguration en 1681.",
+          storyLabel: "+ L'histoire folle du Canal du Midi",
+          practical: {
+            price: "Gratuit (balade velo) · Mini-croisiere ~10€",
+            opening: "Toute la journee",
+            maps_url: "https://www.google.com/maps/search/Port+Embouchure+Canal+du+Midi+Toulouse",
+          },
+          tips: "Rendre les velos a la station Canal du Midi avant de partir vers le centre — ne pas les garder trop longtemps au-dela de 30 min.",
+        },
+        {
+          id: "d4-s10", time: "16:20", duration_min: 10,
+          type: "transport",
+          name: "Metro ligne A → Jean Jaures · 10 min",
+          description: "Station Compans-Caffarelli (ligne A) a 5 min a pied du canal. Descendre a Jean Jaures — 2 stations, 4 min. Rue Saint-Rome est a 5 min a pied de la station.",
+          practical: {
+            price: "1,80€/pers.",
+            maps_url: "https://www.google.com/maps/dir/Port+Embouchure+Toulouse/Jean+Jaures+Metro+Toulouse",
+          },
+          tips: "Ticket achetable sur l'application Tisséo ou directement en station. Valable 1h30.",
+        },
+        {
+          id: "d4-s11", time: "16:30", duration_min: 60,
+          type: "shopping",
+          name: "Rue Saint-Rome & artisans locaux",
+          description: "La rue commercante historique du centre pieton. Boutiques locales, createurs, epiceries fines. Parfait pour les cadeaux et souvenirs de qualite.",
+          story: "Les violettes de Toulouse sont l'embleme floral de la ville — on en fait des bonbons, des liqueurs, des parfums. Offertes par les amoureux depuis le XIXe siecle. Cherche aussi les gimblettes de Toulouse (petits biscuits annulaires au zeste de citron) et les saucissons de la Maison Garcia — des adresses mythiques qui se transmettent de generation en generation.",
+          storyLabel: "+ Quoi rapporter ?",
+          practical: {
+            price: "Selon envies",
+            address: "Rue Saint-Rome, Toulouse",
+            maps_url: "https://www.google.com/maps/search/Rue+Saint-Rome+Toulouse",
+          },
+        },
+      ],
+    },
+
+  ], /* end days[] */
+
+  /* ====================================================================
+     RESTAURANTS — 5 adresses completes avec toutes les donnees
+     ==================================================================== */
+  restos: [
+
+    {
+      id: "resto-1", accentColor: "#D4705A",
+      category: "Coup de coeur romantique · Guide Michelin",
+      name: "Au Pois Gourmand",
+      stars: "★★★★★", starsNote: "4.6/5 · #21 Toulouse · 1811 avis",
+      price_range: "€€€",
+      description: "Au bord de la Garonne, dans une maison coloniale du XIXe siecle entouree de verdure. Terrasse panoramique sur le fleuve, cuisine gastronomique decomplex ee. Le chef Ugo Plazzotta sublime les produits locaux. L'adresse la plus romantique de la ville. Dans le Guide Michelin.",
+      address: "3 rue Emile Heybrard, Toulouse",
+      phone: "+33 5 34 36 42 00",
+      maps_url: "https://www.google.com/maps/search/Au+Pois+Gourmand+3+rue+Emile+Heybrard+Toulouse",
+      booking_url: "https://www.thefork.fr/restaurant/au-pois-gourmand-r775577",
+      opening: "Midi : Mer-Dim · Soir : Jeu-Sam",
+      reservation_required: true,
+      used_on_days: ["day4"],
+      meta: [
+        { label: "Adresse",   value: "3 rue Emile Heybrard" },
+        { label: "Prix midi", value: "Menu a 29€" },
+        { label: "Prix soir", value: "49-99€ / pers." },
+        { label: "Ideal pour", value: "Diner romantique" },
+      ],
+      tags: [
+        { text: "Guide Michelin", bg: "#FAE8DC", color: "#C4705A" },
+        { text: "Vue Garonne",    bg: "#EAD8F0", color: "#6B3A7A" },
+        { text: "Terrasse",       bg: "#D8EAF5", color: "#3A5A7A" },
+        { text: "Parking gratuit", bg: "#F5EAD8", color: "#6B4A2A" },
+      ],
+      verdict: "La meilleure table romantique de Toulouse, verifiee sur toutes les plateformes. Menu midi a 29€ = rapport qualite-prix exceptionnel. Reserver absolument pour la terrasse face au fleuve.",
+      verdictLabel: "Notre verdict",
+      verdictBg: "#FFF5F0",
+    },
+
+    {
+      id: "resto-2", accentColor: "#9B7BAA",
+      category: "Institution historique · Place du Capitole",
+      name: "Le Bibent",
+      stars: "★★★★☆", starsNote: "4.1/5 · 6130 avis · monument historique classe",
+      price_range: "€€€",
+      description: "En plein coeur de la Place du Capitole, dans un ecrin Napoleon III classe. Fresques, miroirs, lustres Belle Epoque. Cuisine brasserie chic : cassoulet, foie gras, profiteroles. L'institution toulousaine par excellence, ouverte depuis 1861.",
+      address: "5 Place du Capitole, Toulouse",
+      phone: "+33 5 61 23 07 03",
+      maps_url: "https://www.google.com/maps/search/Le+Bibent+5+Place+du+Capitole+Toulouse",
+      booking_url: "https://www.thefork.fr/restaurant/bibent-r205773",
+      opening: "Mer-Sam + Mar soir",
+      reservation_required: true,
+      used_on_days: ["day1"],
+      meta: [
+        { label: "Adresse",   value: "5 Place du Capitole" },
+        { label: "Prix",      value: "40-90€ / pers." },
+        { label: "Ouvert",    value: "Mer-Sam + Mar soir" },
+        { label: "Ideal pour", value: "Diner elegant" },
+      ],
+      tags: [
+        { text: "Monument historique", bg: "#EAD8F0", color: "#6B3A7A" },
+        { text: "Place du Capitole",   bg: "#FAE8DC", color: "#C4705A" },
+        { text: "Terrasse",            bg: "#D8EAF5", color: "#3A5A7A" },
+      ],
+      verdict: "Cadre epoustouflant, avis parfois inegaux sur la cuisine mais l'experience du lieu vaut la visite. Ideal pour un diner au coeur de la ville rose. Reserver pour eviter l'attente.",
+      verdictLabel: "Notre verdict",
+      verdictBg: "#F9F5FF",
+    },
+
+    {
+      id: "resto-3", accentColor: "#7B9EBB",
+      category: "Meilleur rapport qualite-prix · Rue du Taur",
+      name: "Pastel et Sarrasin",
+      stars: "★★★★★", starsNote: "Tres bien note · entre Saint-Sernin & Capitole",
+      price_range: "€",
+      description: "Rue du Taur, a deux pas de la Basilique. Galettes de sarrasin bio, crepes au froment biologique, salades originales et wraps. Terrasse ensoleillee, patio couvert. Cuisine bretonne revisitee avec des produits locaux. Sous les 15€ par personne, qualite irreprocable.",
+      address: "Rue du Taur, Toulouse",
+      maps_url: "https://www.google.com/maps/search/Pastel+et+Sarrasin+Toulouse+Rue+du+Taur",
+      opening: "Tj sauf lundi",
+      reservation_required: false,
+      used_on_days: ["day1"],
+      meta: [
+        { label: "Adresse",     value: "Rue du Taur" },
+        { label: "Prix",        value: "<15€ / pers." },
+        { label: "Ouvert",      value: "Tj sauf lundi" },
+        { label: "Ideal pour",  value: "Dejeuner leger" },
+      ],
+      tags: [
+        { text: "Bio & local",              bg: "#D8EAF5", color: "#3A5A7A" },
+        { text: "Entre St-Sernin & Capitole", bg: "#FAE8DC", color: "#C4705A" },
+        { text: "Terrasse",                  bg: "#F5D5E2", color: "#C45A7A" },
+      ],
+      verdict: "L'adresse parfaite pour le dejeuner du Jour 1. Idealement placee sur le parcours Saint-Sernin → Capitole. Produits bio, prix doux, terrasse agreable. Pas de reservation necessaire.",
+      verdictLabel: "Notre verdict",
+      verdictBg: "#F0F7FF",
+    },
+
+    {
+      id: "resto-4", accentColor: "#E8956A",
+      category: "Incontournable populaire · Place du Capitole",
+      name: "Le Bouillon Capitole",
+      stars: "★★★★☆", starsNote: "Avis mitiges sur la qualite, prix imbattables",
+      price_range: "€",
+      description: "Face au Capitole, dans l'esprit des bouillons parisiens. Plats des 1,90€ (oeuf mimosa) a 12€ (cassoulet). 800 couverts/jour, service continu 7j/7 jusqu'a 23h30. L'experience populaire authentique de Toulouse. Prevoir une file d'attente.",
+      address: "1 Place du Capitole, Toulouse",
+      maps_url: "https://www.google.com/maps/search/Bouillon+Capitole+Place+du+Capitole+Toulouse",
+      opening: "7j/7 · 11h30-23h30",
+      reservation_required: false,
+      used_on_days: ["day2"],
+      meta: [
+        { label: "Adresse",       value: "1 Place du Capitole" },
+        { label: "Prix",          value: "~20€ max / pers." },
+        { label: "Ouvert",        value: "7j/7 · 11h30-23h30" },
+        { label: "Reservation",   value: "Sans reservation" },
+      ],
+      tags: [
+        { text: "Prix ultra bas",         bg: "#FAE8DC", color: "#C4705A" },
+        { text: "Cuisine francaise classique", bg: "#F5EAD8", color: "#6B4A2A" },
+        { text: "File d'attente habituelle",   bg: "#EAD8F0", color: "#6B3A7A" },
+      ],
+      verdict: "Avis partages : certains adorent, d'autres trouvent la cuisine basique. Reserve plutot pour un dejeuner rapide entre deux visites. Pour un vrai repas de qualite, prefere Pastel et Sarrasin ou Au Pois Gourmand.",
+      verdictLabel: "A savoir",
+      verdictBg: "#FFF8F0",
+    },
+
+    {
+      id: "resto-5", accentColor: "#6B3A40",
+      category: "Etoile Michelin · Gastronomique",
+      name: "Les Jardins de l'Opera",
+      stars: "★★★★★", starsNote: "1 etoile Michelin · Chef Stephane Tournie · Capitole",
+      price_range: "€€€€",
+      description: "Au pied du Capitole, dans une cour preservee du tumulte de la ville. Le chef Stephane Tournie propose une cuisine du Sud-Ouest gastronomique et raffinnee. Cadre intimiste, lumiere naturelle, service impeccable. La table etoilee la plus centrale de Toulouse.",
+      address: "1 Place du Capitole, Toulouse",
+      phone: "+33 5 61 23 07 76",
+      maps_url: "https://www.google.com/maps/search/Les+Jardins+de+l+Opera+Place+du+Capitole+Toulouse",
+      booking_url: "https://www.thefork.fr/restaurant/les-jardins-de-l-opera-r205771",
+      opening: "Mar-Sam midi & soir",
+      reservation_required: true,
+      used_on_days: [],
+      meta: [
+        { label: "Adresse",      value: "1 Place du Capitole" },
+        { label: "Prix",         value: "Menu degustation" },
+        { label: "Ouvert",       value: "Mar-Sam midi & soir" },
+        { label: "Reservation",  value: "Obligatoire" },
+      ],
+      tags: [
+        { text: "Etoile Michelin 2025",      bg: "#FAE8DC", color: "#8B3A20" },
+        { text: "Cuisine Sud-Ouest raffinnee", bg: "#EAD8F0", color: "#6B3A7A" },
+        { text: "Cour interieure",            bg: "#D8EAF5", color: "#3A5A7A" },
+      ],
+      verdict: "Pour un repas d'exception. Reservation indispensable plusieurs jours a l'avance. Ideal pour une soiree speciale — si le budget le permet, c'est l'experience ultime a Toulouse.",
+      verdictLabel: "Notre verdict",
+      verdictBg: "#FFF0F0",
+    },
+
+  ], /* end restos[] */
+
+}; /* end TRIP */
+</script>
+<!-- === FIN BLOC DONNEES === -->
+
+
+<!-- =====================================================================
+  BLOC 2 — DESIGN SYSTEM
+  ======================================================================
+  Modifiez ici pour changer couleurs, polices, espacements.
+  Ne touchez pas ce bloc pour changer le contenu du voyage.
+  Tokens CSS dans :root — une seule valeur par variable.
+  ===================================================================== -->
+<style>
+/* TOKENS */
+:root {
+  --brick:        #D4705A;
+  --brick-hover:  #C4604A;
+  --brick-pastel: #F2C4A8;
+  --ocre:         #E8956A;
+  --violette:     #9B7BAA;
+  --pastel-bleu:  #7B9EBB;
+  --gold:         #D4A853;
+  --gold-light:   #E8C4A8;
+  --transport:    #6B8E9F;
+
+  --cream:        #FDF5F0;
+  --cream-dark:   #EDE3D3;
+  --peche:        #FAE8DC;
+  --rose-dragee:  #F5D5E2;
+  --lilas:        #EAD8F0;
+  --ciel:         #D8EAF5;
+  --sable:        #F5EAD8;
+
+  --dark:         #3D1F1A;
+  --medieval:     #4A3728;
+  --bordeaux:     #6B3A40;
+  --stone:        #8B7355;
+  --text:         #3D2B1F;
+  --text-muted:   #B87A6A;
+
+  --f-display: 'Playfair Display', serif;
+  --f-body:    'DM Sans', sans-serif;
+  --f-italic:  'Cormorant Garamond', serif;
+
+  --r:     8px;
+  --r-sm:  4px;
+  --r-lg:  14px;
+
+  --shadow:      0 2px 12px rgba(44,24,16,.07);
+  --shadow-deep: 0 8px 32px rgba(44,24,16,.14);
+
+  --nav-h:    64px;
+  --safe-btm: env(safe-area-inset-bottom, 0px);
+  --pb:       calc(var(--nav-h) + var(--safe-btm));
+}
+
+/* RESET */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-body);background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;padding-bottom:var(--pb)}
+
+/* APP SHELL */
+.app-section{display:none;min-height:100dvh}
+.app-section.active{display:block;animation:fadeUp .25s ease both}
+
+/* BOTTOM NAV */
+.app-nav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--dark);border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-around;padding-bottom:var(--safe-btm)}
+.app-nav-btn{flex:1;min-height:var(--nav-h);padding:10px 4px 8px;background:none;border:none;color:rgba(255,255,255,.4);font-family:var(--f-body);font-size:10px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:color .2s;position:relative}
+.app-nav-btn .ni{width:22px;height:22px;line-height:1;display:flex;align-items:center;justify-content:center}
+.app-nav-btn .ni svg{width:22px;height:22px;display:block}
+.app-nav-btn.active{color:var(--gold-light)}
+.app-nav-btn.active::before{content:'';position:absolute;top:0;width:28px;height:2px;background:var(--brick);border-radius:0 0 2px 2px}
+
+/* HERO COMPACT */
+.hero-c{background:linear-gradient(160deg,var(--rose-dragee) 0%,var(--peche) 40%,var(--brick-pastel) 70%,var(--lilas) 100%);padding:30px 20px 20px;text-align:center;position:relative;overflow:hidden}
+.hero-c::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C4705A' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.hero-c__tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);font-weight:500;margin-bottom:8px;position:relative}
+.hero-c__title{font-family:var(--f-display);font-size:clamp(24px,7vw,34px);color:var(--dark);line-height:1.15;position:relative}
+.hero-c__title em{color:var(--brick);font-style:italic}
+.hero-c__amp{font-family:var(--f-italic);font-size:20px;color:rgba(61,31,26,.22);display:inline-block;margin:0 6px}
+.hero-c__sub{font-family:var(--f-italic);font-size:14px;font-style:italic;color:var(--bordeaux);margin-top:5px;position:relative}
+.hero-c__stats{display:flex;justify-content:center;gap:28px;margin-top:14px;position:relative}
+.hero-stat strong{display:block;font-family:var(--f-display);font-size:22px;color:var(--brick);line-height:1}
+.hero-stat span{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted)}
+
+/* CHIPS */
+.chips-wrap{position:sticky;top:0;z-index:200;background:var(--dark);padding:10px 12px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(196,82,42,.2);-webkit-overflow-scrolling:touch}
+.chips-wrap::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;min-height:44px;padding:8px 16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:22px;color:rgba(255,255,255,.55);font-family:var(--f-body);font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:5px}
+.chip.active{background:var(--brick);border-color:var(--brick);color:#fff;font-weight:600}
+.chip:hover:not(.active){background:rgba(255,255,255,.12);color:rgba(255,255,255,.8)}
+.chip__dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6}
+.chip.active .chip__dot{opacity:1;background:rgba(255,255,255,.7)}
+
+/* DAY PANELS */
+.day-panel{display:none}
+.day-panel.active{display:block}
+
+/* DAY HEADER */
+.day-hdr{padding:26px 20px 16px;position:relative;overflow:hidden}
+.day-bgnum{position:absolute;top:-10px;right:-10px;font-family:var(--f-italic);font-size:110px;font-weight:300;color:var(--cream-dark);line-height:1;user-select:none;pointer-events:none}
+.day-lbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--brick);font-weight:500;margin-bottom:5px;position:relative}
+.day-ttl{font-family:var(--f-display);font-size:clamp(20px,5vw,30px);color:var(--dark);line-height:1.2;margin-bottom:3px;position:relative}
+.day-sub{font-family:var(--f-italic);font-size:14px;font-style:italic;color:var(--text-muted);position:relative}
+
+/* MAP BLOCK */
+.map-block{margin:0 16px 20px;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-deep)}
+.map-block iframe{width:100%;height:220px;border:none;display:block}
+.map-sheet{background:#fff;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.map-sheet__lbl{font-size:11px;font-weight:600;color:var(--dark)}
+.map-sheet__sub{font-size:10px;color:var(--text-muted);margin-top:1px}
+.map-sheet__btn{flex-shrink:0;display:inline-flex;align-items:center;background:var(--brick);color:#fff;text-decoration:none;font-family:var(--f-body);font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:8px 14px;border-radius:20px;min-height:36px;white-space:nowrap;transition:background .2s}
+.map-sheet__btn:hover{background:var(--brick-hover)}
+
+/* CULTURE BOX */
+.cult-box{margin:0 16px 20px;background:linear-gradient(135deg,var(--dark) 0%,var(--medieval) 100%);color:#fff;padding:20px 16px;border-radius:var(--r);position:relative;overflow:hidden}
+.cult-box::before{content:'📖';position:absolute;top:-8px;right:14px;font-size:56px;opacity:.07;pointer-events:none}
+.cult-box__tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);margin-bottom:8px;opacity:.8}
+.cult-box h3{font-family:var(--f-display);font-size:17px;margin-bottom:8px;color:#fff}
+.cult-box p{font-family:var(--f-italic);font-size:14px;line-height:1.7;color:rgba(255,255,255,.75);font-style:italic}
+.cult-facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.cult-fact{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);padding:5px 10px;border-radius:var(--r-sm);font-size:11px;color:rgba(255,255,255,.65)}
+.cult-fact strong{color:var(--gold-light);display:block;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:1px}
+
+/* TRAIN BANNER */
+.train-ban{margin:0 16px 16px;background:var(--dark);color:#fff;padding:12px 14px;border-radius:var(--r);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.train-ban__lbl{font-weight:600;font-size:12px}
+.train-ban__info{font-size:11px;color:rgba(255,255,255,.6);flex:1}
+.train-ban__badge{font-size:10px;background:rgba(212,112,90,.3);padding:3px 9px;border-radius:11px;color:var(--gold-light);white-space:nowrap}
+
+/* TIMELINE */
+.timeline{padding:0 16px 24px}
+.tl-item{display:grid;grid-template-columns:50px 1fr;gap:0 14px}
+.tl-time{text-align:right;padding-top:20px}
+.tl-time span{font-size:11px;font-weight:600;color:var(--brick)}
+.tl-body{position:relative;padding:0 0 0 16px;border-left:2px solid var(--cream-dark)}
+.tl-dot{position:absolute;left:-6px;top:22px;width:10px;height:10px;border-radius:50%;background:var(--brick);border:2px solid var(--cream)}
+.tl-dot.gold{background:var(--gold)}
+.tl-dot.stone{background:var(--stone)}
+.tl-dot.transport{background:var(--transport)}
+.tl-card{background:#fff;border-radius:var(--r);padding:14px 13px;margin:10px 0;box-shadow:var(--shadow);border-left:3px solid var(--cream-dark);transition:box-shadow .2s,transform .2s}
+.tl-card:active{box-shadow:var(--shadow-deep);transform:scale(.99)}
+.tl-card.highlight{border-left-color:var(--brick)}
+.tl-card.food{border-left-color:var(--gold)}
+.tl-card.culture{border-left-color:var(--stone)}
+.tl-card.transport{border-left-color:var(--transport)}
+.c-type{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:3px;color:var(--text-muted);display:flex;align-items:center;gap:4px}
+/* Icône SVG dans le label de type — hérite de la couleur du parent via currentColor */
+.svg-type-ico{display:inline-flex;align-items:center;flex-shrink:0}
+.svg-type-ico svg{width:11px;height:11px;display:block}
+.c-type.highlight{color:var(--brick)}
+.c-type.food{color:var(--gold)}
+.c-type.culture{color:var(--stone)}
+.c-type.transport{color:var(--transport)}
+.c-title{font-family:var(--f-display);font-size:16px;color:var(--dark);margin-bottom:5px;line-height:1.25}
+.c-desc{font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:8px}
+.c-meta{display:flex;gap:10px;flex-wrap:wrap}
+.c-meta span{font-size:10px;color:var(--text-muted)}
+/* NOTE: .story-btn/.story-drw/.c-alt conserves pour retrocompatibilite
+   si des steps avec story/alternatives sont re-introduits dans TRIP{} */
+.story-btn{background:none;border:1px solid rgba(196,82,42,.22);color:var(--brick);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border-radius:var(--r-sm);cursor:pointer;margin-top:9px;transition:all .2s;font-family:var(--f-body);min-height:34px}
+.story-btn:hover{background:var(--brick);color:#fff}
+.story-drw{background:linear-gradient(to bottom,var(--cream-dark),var(--cream));border:1px solid rgba(196,82,42,.12);border-radius:var(--r);padding:13px 15px;margin-top:7px;display:none;font-family:var(--f-italic);font-size:14px;font-style:italic;color:var(--medieval);line-height:1.8;position:relative}
+.story-drw::before{content:'"';font-size:46px;color:var(--brick);opacity:.1;position:absolute;top:-7px;left:9px;font-style:normal;line-height:1}
+.story-drw.open{display:block}
+.c-alt{margin-top:9px;padding:9px 11px;background:var(--cream);border-radius:var(--r-sm);font-size:11px;line-height:1.9;color:var(--dark)}
+.c-alt a{color:var(--brick);font-weight:500;text-decoration:none}
+.c-alt-hdr{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px}
+.link-p{color:inherit;text-decoration:none;border-bottom:1px dashed rgba(196,82,42,.3);transition:border-color .2s}
+.link-p:hover{border-color:var(--brick)}
+
+/* FREE DAY */
+.free-day{margin:14px 16px 28px;background:#fff;border-radius:var(--r);padding:22px 18px;box-shadow:var(--shadow);text-align:center}
+.free-day__orn{font-family:var(--f-italic);font-size:34px;color:var(--gold);margin-bottom:10px}
+.free-day__ttl{font-family:var(--f-display);font-size:19px;color:var(--dark);margin-bottom:10px}
+.free-day__txt{font-family:var(--f-italic);font-size:14px;font-style:italic;color:var(--bordeaux);line-height:1.8;text-align:left}
+
+/* OVERVIEW */
+.ov-grid{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.ov-card{background:#fff;padding:16px 13px;border-radius:var(--r);cursor:pointer;transition:all .2s;box-shadow:var(--shadow);position:relative;overflow:hidden;min-height:95px;
+  /* reset button */
+  border:none;text-align:left;font-family:inherit;width:100%}
+.ov-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--brick);transform:scaleX(0);transition:transform .2s}
+.ov-card:active::after{transform:scaleX(1)}
+.ov-card:active{background:var(--peche)}
+.ov-num{font-family:var(--f-italic);font-size:38px;color:var(--cream-dark);font-weight:300;line-height:1;margin-bottom:3px}
+.ov-lbl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--brick);margin-bottom:3px;font-weight:600}
+.ov-ttl{font-family:var(--f-display);font-size:13px;color:var(--dark);margin-bottom:3px;line-height:1.2}
+.ov-sub{font-size:10px;color:var(--text-muted);line-height:1.4}
+
+/* BUDGET */
+.budget{background:var(--dark);padding:22px 14px;margin-top:8px}
+.budget__ttl{font-family:var(--f-display);font-size:18px;color:#fff;text-align:center;margin-bottom:16px}
+.budget__grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:360px;margin:0 auto}
+.budget__item{text-align:center;padding:13px 9px;background:rgba(255,255,255,.05);border-radius:var(--r);border:1px solid rgba(255,255,255,.07)}
+.budget__amt{font-family:var(--f-display);font-size:22px;color:var(--gold-light);display:block}
+.budget__lbl{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:3px;display:block}
+.budget__note{text-align:center;margin-top:11px;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px}
+
+/* RESTOS */
+.restos-hdr{background:linear-gradient(160deg,var(--peche) 0%,var(--rose-dragee) 60%,var(--lilas) 100%);padding:24px 20px 18px;text-align:center}
+.restos-hdr__tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);font-weight:500;margin-bottom:7px}
+.restos-hdr h1{font-family:var(--f-display);font-size:clamp(22px,7vw,32px);color:var(--dark);line-height:1.2}
+.restos-hdr h1 em{color:var(--brick)}
+.restos-hdr__sub{font-size:11px;color:var(--text-muted);margin-top:6px}
+.badges{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-top:11px}
+.badge{background:#fff;border-radius:13px;padding:4px 11px;font-size:10px;color:var(--bordeaux);font-weight:500;box-shadow:0 2px 8px rgba(61,31,26,.08)}
+.restos-intro{padding:13px 20px 5px;text-align:center}
+.restos-intro p{font-family:var(--f-italic);font-size:14px;font-style:italic;color:var(--bordeaux);line-height:1.75}
+.resto-cards{padding:0 14px 20px;display:flex;flex-direction:column;gap:10px}
+.rc{background:#fff;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
+.rc__acc{height:4px}
+.rc__body{padding:15px 13px;position:relative}
+.rc__num{position:absolute;top:11px;right:12px;font-family:var(--f-italic);font-size:40px;font-style:italic;color:var(--cream-dark);font-weight:300;line-height:1;user-select:none}
+.rc__cat{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;margin-bottom:3px}
+.rc__name{font-family:var(--f-display);font-size:clamp(17px,5vw,22px);color:var(--dark);line-height:1.1;margin-bottom:3px}
+/* .stars-row — notes et avis restos */
+.stars-row{font-size:11px;color:#D4A020;letter-spacing:1px;margin-bottom:4px}
+.stars-row span{color:var(--text-muted);font-size:10px;margin-left:4px}
+/* .stars-row removed comment was wrong — restored */
+.divider{height:1px;background:var(--cream-dark);margin:6px 0}
+.rc__desc{font-family:var(--f-italic);font-size:14px;font-style:italic;color:var(--bordeaux);line-height:1.65;margin-bottom:11px}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:11px}
+.mi{background:var(--cream);border-radius:var(--r-sm);padding:6px 9px}
+.mi__lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:2px}
+.mi__val{font-size:11px;font-weight:600;color:var(--dark)}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.tag{font-size:10px;padding:3px 9px;border-radius:11px;font-weight:500}
+.verdict{border-radius:var(--r-sm);padding:10px 12px;font-size:11px;line-height:1.6;color:var(--dark)}
+.verdict__lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:2px;display:block}
+.rc-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.btn-m{display:inline-flex;align-items:center;gap:4px;background:var(--brick);color:#fff;text-decoration:none;font-family:var(--f-body);font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:8px 13px;border-radius:19px;min-height:34px;transition:background .2s;white-space:nowrap}
+.btn-m:hover{background:var(--brick-hover)}
+.btn-m--blue{background:var(--pastel-bleu)}
+.btn-r{display:inline-flex;align-items:center;gap:4px;background:transparent;border:1.5px solid var(--brick);color:var(--brick);text-decoration:none;font-family:var(--f-body);font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:8px 13px;border-radius:19px;min-height:34px;transition:all .2s;white-space:nowrap}
+.btn-r:hover{background:var(--brick);color:#fff}
+.tips-section{background:var(--dark);padding:20px 13px;margin-top:3px}
+.tips-section__ttl{font-family:var(--f-display);font-size:17px;color:#fff;margin-bottom:13px;text-align:center}
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:12px 10px}
+.tip-ico{font-size:17px;margin-bottom:5px}
+.tip h4{font-family:var(--f-display);font-size:12px;color:#fff;margin-bottom:3px}
+.tip p{font-size:10px;color:rgba(255,255,255,.55);line-height:1.55}
+
+/* CARTES */
+.maps-hdr{background:var(--dark);padding:24px 20px 18px;text-align:center}
+.maps-hdr__tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);opacity:.7;margin-bottom:7px;font-weight:500}
+.maps-hdr h1{font-family:var(--f-display);font-size:24px;color:#fff}
+.maps-hdr h1 em{color:var(--gold-light);font-style:italic}
+.maps-hdr__sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:5px}
+.map-full{height:calc(100dvh - var(--pb) - 108px);min-height:270px}
+.map-full iframe{width:100%;height:100%;border:none;display:block}
+.map-links{padding:13px}
+.map-links__ttl,.section-ttl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:9px;text-align:center}
+.map-day-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.map-day-btn{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--cream-dark);border-radius:var(--r);padding:11px 12px;text-decoration:none;min-height:50px;transition:all .2s;box-shadow:var(--shadow)}
+.map-day-btn:hover{border-color:var(--brick);background:var(--peche)}
+.map-day-btn__n{font-family:var(--f-italic);font-size:20px;color:var(--cream-dark);font-weight:300;line-height:1;flex-shrink:0}
+.map-day-btn__l{font-size:10px;font-weight:600;color:var(--dark);line-height:1.3}
+.map-day-btn__s{font-size:9px;color:var(--text-muted)}
+
+/* PRATIQUE — système contextuel ────────────────────────────────── */
+.prat-hdr{background:linear-gradient(160deg,var(--sable) 0%,var(--cream-dark) 100%);padding:24px 20px 18px;text-align:center}
+.prat-hdr__tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);font-weight:500;margin-bottom:7px}
+.prat-hdr h1{font-family:var(--f-display);font-size:24px;color:var(--dark)}
+
+/* Alertes contextuelles (style SNCF) */
+.prat-alerts{padding:13px 13px 0;display:flex;flex-direction:column;gap:9px}
+.prat-alert{border-left:4px solid var(--brick);border-radius:var(--r);padding:13px 13px 13px 14px;box-shadow:var(--shadow)}
+.prat-alert__top{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.prat-alert__ico{font-size:17px;line-height:1}
+.prat-alert__badge{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:9px;flex-shrink:0}
+.prat-alert__title{font-family:var(--f-display);font-size:14px;color:var(--dark);margin-bottom:3px;line-height:1.3}
+.prat-alert__body{font-size:11px;color:var(--text-muted);line-height:1.5;margin-bottom:9px}
+.prat-alert__btn{display:inline-flex;align-items:center;background:var(--dark);color:#fff;text-decoration:none;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:7px 13px;border-radius:15px;min-height:32px;transition:background .2s}
+.prat-alert__btn:hover{background:var(--brick)}
+
+/* Sections avec titre séparateur */
+.prat-section{padding:13px 13px 0}
+.prat-section:last-child{padding-bottom:24px}
+.prat-section__ttl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid var(--cream-dark)}
+
+/* Row hôtel */
+.prat-row{display:flex;align-items:center;gap:11px;background:#fff;border-radius:var(--r);padding:13px 12px;box-shadow:var(--shadow);margin-bottom:0}
+.prat-row--hotel{border-left:3px solid var(--violette)}
+.prat-row--empty{opacity:.7}
+.prat-row__ico{font-size:20px;flex-shrink:0}
+.prat-row__body{flex:1;min-width:0}
+.prat-row__title{font-family:var(--f-display);font-size:14px;color:var(--dark);margin-bottom:2px}
+.prat-row__sub{font-size:11px;color:var(--text-muted);line-height:1.4}
+.prat-row__actions{display:flex;gap:5px;flex-shrink:0}
+.prat-row__btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--cream);color:var(--dark);text-decoration:none;font-size:15px;transition:background .2s}
+.prat-row__btn:hover{background:var(--peche)}
+
+/* Lignes compactes (toujours utile / en cas de besoin) */
+.prat-line{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--cream-dark);font-size:12px;color:var(--dark);line-height:1.45}
+.prat-line:last-child{border-bottom:none}
+.prat-line__ico{font-size:14px;flex-shrink:0;margin-top:1px;display:inline-flex;align-items:center;width:16px;justify-content:center}
+.prat-line__ico svg{width:14px;height:14px;display:block}
+.prat-line--muted{color:var(--text-muted);font-size:11px}
+
+/* Photos album */
+.photos-ban{margin:0 13px 13px;background:linear-gradient(135deg,#4285F4,#EA4335,#FBBC04,#34A853);border-radius:var(--r);padding:2px}
+.photos-ban__in{background:var(--dark);border-radius:calc(var(--r) - 2px);padding:13px;display:flex;align-items:center;gap:10px}
+.photos-ban__ico{font-size:26px;flex-shrink:0}
+.photos-ban__lbl{font-size:12px;font-weight:600;color:#fff}
+.photos-ban__sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+.photos-ban__btn{flex-shrink:0;display:inline-flex;align-items:center;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:7px 11px;border-radius:15px;min-height:34px;white-space:nowrap;transition:background .2s}
+.photos-ban__btn:hover{background:rgba(255,255,255,.2)}
+
+/* STEP BADGES — optional & reservation */
+.step-badge{display:inline-block;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin:4px 4px 0 0}
+.step-badge--opt{background:var(--ciel);color:var(--transport)}
+.step-badge--resa{background:#FFF0E8;color:#C2410C}
+/* STEP TIP */
+.step-tip{margin-top:9px;padding:8px 11px;background:var(--sable);border-left:3px solid var(--gold);border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:11px;color:var(--medieval);line-height:1.5}
+/* STEP PHONE */
+.step-phone{display:inline-block;margin-top:6px;font-size:10px;color:var(--pastel-bleu);text-decoration:none;font-weight:500}
+/* STEP BOOKING BUTTON */
+.step-book-btn{display:inline-flex;align-items:center;margin-top:8px;background:var(--brick);color:#fff;text-decoration:none;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:6px 12px;border-radius:16px;min-height:30px;transition:background .2s}
+.step-book-btn:hover{background:var(--brick-hover)}
+/* OPTIONAL card tint */
+.tl-card--optional{opacity:.85;border-left-style:dashed}
+/* DAYS BADGE on resto card */
+.rc__days{display:flex;gap:5px;margin:4px 0 6px}
+.rc__days span{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:var(--peche);color:var(--brick);padding:2px 7px;border-radius:9px}
+/* USEFUL LINKS */
+.useful-link{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--cream-dark);border-radius:var(--r);padding:12px 14px;text-decoration:none;color:var(--dark);font-size:12px;font-weight:500;transition:all .2s;box-shadow:var(--shadow)}
+.useful-link:hover{border-color:var(--brick);background:var(--peche)}
+.useful-link__arr{color:var(--brick);font-size:14px;flex-shrink:0}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESPONSIVE */
+@media(min-width:480px){.ov-grid{grid-template-columns:repeat(3,1fr)}.tips-grid{grid-template-columns:repeat(4,1fr)}.prat-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:768px){.map-full{height:60vh}.map-day-grid{grid-template-columns:repeat(3,1fr)}.timeline{max-width:620px;margin:0 auto;padding-left:0;padding-right:0}}
+</style>
+<!-- === FIN BLOC STYLE === -->
+</head>
+
+<!-- HTML SQUELETTE — structure stable, aucune donnee en dur -->
+<body>
+<div id="section-programme" class="app-section active"></div>
+<div id="section-restos"    class="app-section"></div>
+<div id="section-cartes"    class="app-section"></div>
+<div id="section-pratique"  class="app-section"></div>
+
+<nav class="app-nav" role="navigation" aria-label="Navigation principale">
+
+  <!-- Programme — Calendrier ponctué SVG expressif -->
+  <button class="app-nav-btn active" data-section="section-programme">
+    <span class="ni">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="3" stroke-width="1.4"/>
+        <path d="M3 10h18" stroke-width="1.2"/>
+        <line x1="8" y1="2" x2="8" y2="6" stroke-width="2"/>
+        <line x1="16" y1="2" x2="16" y2="6" stroke-width="2"/>
+        <circle cx="8" cy="15" r="1.3" fill="currentColor" stroke="none"/>
+        <circle cx="12" cy="15" r="1.3" fill="currentColor" stroke="none"/>
+        <circle cx="16" cy="15" r="1.3" fill="currentColor" stroke="none"/>
+      </svg>
+    </span>
+    <span>Programme</span>
+  </button>
+
+  <!-- Restos — Cloche de table SVG expressif (unifié avec step restaurant) -->
+  <button class="app-nav-btn" data-section="section-restos">
+    <span class="ni">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="17.5" rx="9" ry="2" stroke-width="1.3"/>
+        <path d="M5.5 17.5C5.5 12 8 7.5 12 7s6.5 5 6.5 10.5" stroke-width="1.3"/>
+        <line x1="3" y1="17.5" x2="21" y2="17.5" stroke-width="1.5"/>
+        <line x1="12" y1="7" x2="12" y2="4" stroke-width="1.8"/>
+        <line x1="10" y1="4" x2="14" y2="4" stroke-width="1.6"/>
+      </svg>
+    </span>
+    <span>Restos</span>
+  </button>
+
+  <!-- Cartes — Carte dépliée à pointillés SVG expressif -->
+  <button class="app-nav-btn" data-section="section-cartes">
+    <span class="ni">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3z" stroke-width="1.3"/>
+        <line x1="9" y1="4" x2="9" y2="17" stroke-width="1" stroke-dasharray="2 1.5"/>
+        <line x1="15" y1="7" x2="15" y2="20" stroke-width="1" stroke-dasharray="2 1.5"/>
+      </svg>
+    </span>
+    <span>Cartes</span>
+  </button>
+
+  <!-- Pratique — Presse-papier Lucide (neutre, fonctionnel) -->
+  <button class="app-nav-btn" data-section="section-pratique">
+    <span class="ni">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="8" y="2" width="8" height="4" rx="1"/>
+        <path d="M8 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-2"/>
+        <line x1="9" y1="12" x2="15" y2="12"/>
+        <line x1="9" y1="16" x2="13" y2="16"/>
+      </svg>
+    </span>
+    <span>Pratique</span>
+  </button>
+
+</nav>
+
+
+<!-- =====================================================================
+  BLOC 3 — LOGIQUE
+  ======================================================================
+  Ne touchez pas ce bloc pour changer le contenu ou le style.
+  Moteur de rendu : lit TRIP{} et genere le HTML dynamiquement.
+  IDs stables utilises : day1..day5, section-*, resto-*
+  Single source of truth : toutes les donnees viennent de TRIP{}
+  ===================================================================== -->
+<script>
+'use strict';
+
+/* Helpers */
+const $  = id => document.getElementById(id);
+const esc = s => String(s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+/* safeUrl — valide les URLs avant injection dans href/src
+   Accepte : https, http, tel, mailto. Rejette javascript: et autres. */
+function safeUrl(url) {
+  if (!url) return '#';
+  try {
+    const u = new URL(url, location.href);
+    return ['https:', 'http:', 'tel:', 'mailto:'].includes(u.protocol) ? url : '#';
+  } catch { return '#'; }
+}
+
+/* ── Navigation principale ─────────────────────────────────────── */
+function initNav() {
+  document.querySelectorAll('.app-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.app-nav-btn').forEach(b => b.classList.remove('active'));
+      $(btn.dataset.section).classList.add('active');
+      btn.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+}
+
+/* ── Navigation jours ──────────────────────────────────────────── */
+function showDay(id) {
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.chip').forEach(c => {
+    c.classList.remove('active');
+    c.setAttribute('aria-selected','false');
+  });
+  const panel = $(id);
+  if (panel) panel.classList.add('active');
+  const chip = document.querySelector(`.chip[data-day="${id}"]`);
+  if (chip) {
+    chip.classList.add('active');
+    chip.setAttribute('aria-selected','true');
+    chip.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* toggleStory — listener délégué (remplace l'ancien onclick inline) */
+function initStoryListeners(root) {
+  root.addEventListener('click', e => {
+    const btn = e.target.closest('[data-action="toggle-story"]');
+    if (!btn) return;
+    const drw = btn.nextElementSibling;
+    if (!drw) return;
+    const open = drw.classList.toggle('open');
+    btn.textContent = open ? '− Fermer' : (btn.dataset.label || '+ Histoire du lieu');
+    if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDERERS — transforment TRIP{} en HTML
+   ═══════════════════════════════════════════════════════════════ */
+
+function renderCultureBox(c) {
+  if (!c) return '';
+  return `<div class="cult-box">
+    <div class="cult-box__tag">📖 ${esc(c.tag || '')}</div>
+    <h3>${esc(c.title || '')}</h3>
+    <p>${esc(c.body || '')}</p>
+    <div class="cult-facts">
+      ${(c.facts || []).map(f=>`<div class="cult-fact"><strong>${esc(f.label)}</strong>${esc(f.value)}</div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderMapBlock(d) {
+  if (!d.mapSrc && !d.mapLink) return '';
+  return `<div class="map-block">
+    <iframe title="${esc(d.mapLabel || 'Carte')}" src="${safeUrl(d.mapSrc)}" allowfullscreen loading="lazy"></iframe>
+    <div class="map-sheet">
+      <div>
+        <div class="map-sheet__lbl">🗺 ${esc(d.mapLabel || '')}</div>
+        <div class="map-sheet__sub">${esc(d.mapSub || '')}</div>
+      </div>
+      <a class="map-sheet__btn" href="${safeUrl(d.mapLink)}" target="_blank" rel="noopener noreferrer">&#8599; Maps</a>
+    </div>
+  </div>`;
+}
+
+/* ── Type → CSS class + SVG icon ──────────────────────────────── */
+/* SVG stockés comme strings — injectés dans le DOM via renderStep  */
+/* Corrections designer appliquées :
+   - balade    : empreintes simplifiées (sans orteils → lisibles à 11px)
+   - spectacle : projecteur sans stroke-dasharray (faisceaux continus)
+   - restaurant: cloche unifiée avec nav Restos
+   - shopping  : sac unifié avec souvenirs (Pratique)               */
+const ICO = {
+  visite: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2C8.5 2 6 5 6 8.5c0 5 6 10.5 6 10.5s6-5.5 6-10.5C18 5 15.5 2 12 2z" stroke-width="1.4"/>
+    <circle cx="12" cy="8.5" r="2.2" stroke-width="1.3"/>
+  </svg>`,
+  musee: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 20V10a9 9 0 0 1 18 0v10" stroke-width="1.4"/>
+    <line x1="3" y1="20" x2="21" y2="20" stroke-width="1.5"/>
+    <line x1="9" y1="20" x2="9" y2="13" stroke-width="1.2"/>
+    <line x1="15" y1="20" x2="15" y2="13" stroke-width="1.2"/>
+    <line x1="2" y1="11" x2="22" y2="11" stroke-width="1.2"/>
+  </svg>`,
+  /* Cloche — même forme que nav Restos */
+  restaurant: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="12" cy="17.5" rx="9" ry="2" stroke-width="1.3"/>
+    <path d="M5.5 17.5C5.5 12 8 7.5 12 7s6.5 5 6.5 10.5" stroke-width="1.3"/>
+    <line x1="3" y1="17.5" x2="21" y2="17.5" stroke-width="1.5"/>
+    <line x1="12" y1="7" x2="12" y2="4" stroke-width="1.8"/>
+    <line x1="10" y1="4" x2="14" y2="4" stroke-width="1.6"/>
+  </svg>`,
+  cafe: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 20h12l1-10H3l1 10z" stroke-width="1.3"/>
+    <path d="M16 10h2a3 3 0 0 1 0 6h-2" stroke-width="1.3"/>
+    <path d="M8 3 Q8 1 10 2 Q10 0 12 1" stroke-width="1.3" fill="none"/>
+  </svg>`,
+  /* Empreintes simplifiées — deux ellipses pivotées sans orteils, lisibles à 11px */
+  balade: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="8" cy="6" rx="2.8" ry="4" transform="rotate(-15 8 6)" stroke-width="1.5"/>
+    <ellipse cx="16" cy="16" rx="2.8" ry="4" transform="rotate(15 16 16)" stroke-width="1.5"/>
+  </svg>`,
+  /* Rails en perspective */
+  transport: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="5" y1="22" x2="11" y2="4" stroke-width="1.4"/>
+    <line x1="19" y1="22" x2="13" y2="4" stroke-width="1.4"/>
+    <line x1="6.5" y1="19" x2="17.5" y2="19" stroke-width="1.3"/>
+    <line x1="8" y1="15" x2="16" y2="15" stroke-width="1.2"/>
+    <line x1="9.5" y1="11" x2="14.5" y2="11" stroke-width="1.1"/>
+    <line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke-width="1"/>
+  </svg>`,
+  /* Projecteur — faisceaux continus (sans stroke-dasharray → lisible à 11px) */
+  spectacle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="7" width="9" height="6" rx="2" stroke-width="1.3"/>
+    <circle cx="12.5" cy="10" r="2.5" stroke-width="1.3"/>
+    <line x1="6" y1="13" x2="6" y2="17" stroke-width="1.4"/>
+    <line x1="3" y1="17" x2="9" y2="17" stroke-width="1.4"/>
+    <path d="M15 8 L22 4" stroke-width="1.3"/>
+    <path d="M15 10 L23 10" stroke-width="1.3"/>
+    <path d="M15 12 L22 16" stroke-width="1.3"/>
+  </svg>`,
+  /* Sac — même forme que souvenirs (Pratique), rôle actif dans la timeline */
+  shopping: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 6l2 14h14l2-14" stroke-width="1.3"/>
+    <path d="M6 6 Q6 2 12 2 Q18 2 18 6" stroke-width="1.3"/>
+    <path d="M9 11 Q12 13 15 11" stroke-width="1.2"/>
+    <circle cx="12" cy="6" r="1" fill="currentColor" stroke="none"/>
+  </svg>`,
+};
+
+const TYPE_MAP = {
+  visite:    { css: 'highlight', ico: ICO.visite    },
+  musee:     { css: 'culture',   ico: ICO.musee     },
+  restaurant:{ css: 'food',      ico: ICO.restaurant},
+  cafe:      { css: 'food',      ico: ICO.cafe      },
+  balade:    { css: 'highlight', ico: ICO.balade    },
+  transport: { css: 'transport', ico: ICO.transport },
+  spectacle: { css: 'culture',   ico: ICO.spectacle },
+  shopping:  { css: 'food',      ico: ICO.shopping  },
+};
+function stepMeta(s) {
+  const p = s.practical || {};
+  const parts = [];
+  if (p.price)   parts.push(p.price);
+  if (p.opening) parts.push(p.opening);
+  if (p.address) parts.push(p.address);
+  if (s.duration_min) {
+    const h = Math.floor(s.duration_min / 60);
+    const m = s.duration_min % 60;
+    parts.push('~' + (h > 0 ? h + 'h' : '') + (m > 0 ? (h > 0 ? (String(m).padStart(2,'0')) : m + 'min') : ''));
+  }
+  return parts;
+}
+
+function renderStep(s) {
+  const t    = TYPE_MAP[s.type] || { css: 'highlight', ico: ICO.visite };
+  const p    = s.practical || {};
+  const mapsUrl = p.maps_url || null;
+
+  const titleHtml = mapsUrl
+    ? `<a href="${safeUrl(mapsUrl)}" target="_blank" rel="noopener noreferrer" class="link-p">${esc(s.name)} 📍</a>`
+    : esc(s.name);
+
+  const metaItems = stepMeta(s).map(m=>`<span>${esc(m)}</span>`).join('');
+
+  /* Badges: optional + reservation */
+  const badges = [
+    s.is_optional         ? `<span class="step-badge step-badge--opt">Optionnel</span>` : '',
+    s.reservation_required? `<span class="step-badge step-badge--resa">⚠ Reserver</span>` : '',
+  ].join('');
+
+  /* Booking button */
+  const bookingHtml = p.booking_url ? `
+    <a class="step-book-btn" href="${safeUrl(p.booking_url)}" target="_blank" rel="noopener noreferrer">Reserver →</a>` : '';
+
+  /* Phone */
+  const phoneHtml = p.phone ? `
+    <a class="step-phone" href="${safeUrl('tel:' + p.phone)}">📞 ${esc(p.phone)}</a>` : '';
+
+  /* Tip */
+  const tipHtml = s.tips ? `
+    <div class="step-tip">💡 ${esc(s.tips)}</div>` : '';
+
+  /* Story drawer */
+  const storyHtml = s.story ? `
+    <button class="story-btn" data-action="toggle-story">${esc(s.storyLabel || '+ Histoire du lieu')}</button>
+    <div class="story-drw">${esc(s.story)}</div>` : '';
+
+  /* Time display: "09:00" → "9h00" */
+  const timeDisplay = s.time ? s.time.replace(':','h').replace(/^0/,'') : '';
+
+  return `<div class="tl-item">
+    <div class="tl-time"><span>${esc(timeDisplay)}</span></div>
+    <div class="tl-body">
+      <div class="tl-dot ${t.css}"></div>
+      <div class="tl-card ${t.css}${s.is_optional ? ' tl-card--optional' : ''}">
+        <div class="c-type ${t.css}"><span class="svg-type-ico">${t.ico}</span>${esc(s.type)}</div>
+        <div class="c-title">${titleHtml}</div>
+        ${badges}
+        <div class="c-desc">${esc(s.description)}</div>
+        <div class="c-meta">${metaItems}</div>
+        ${phoneHtml}${bookingHtml}${tipHtml}${storyHtml}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderDayPanel(day) {
+  const trainHtml = day.trainBanner ? `<div class="train-ban">
+    <div>🚆 <span class="train-ban__lbl">${esc(day.trainBanner.label || '')}</span></div>
+    <div class="train-ban__info">${esc(day.trainBanner.info || '')}</div>
+    <div class="train-ban__badge">${esc(day.trainBanner.badge || '')}</div>
+  </div>` : '';
+
+  const contentHtml = day.freeDay
+    ? `<div class="free-day">
+        <div class="free-day__orn">✦</div>
+        <div class="free-day__ttl">Ce jour vous appartient</div>
+        <div class="free-day__txt">${esc(day.freeDayMessage || '')}</div>
+       </div>`
+    : `<div class="timeline">${(day.steps||day.events||[]).map(renderStep).join('')}</div>`;
+
+  return `<div id="${esc(day.id)}" class="day-panel">
+    <div class="day-hdr">
+      <div class="day-bgnum">${esc(day.bgNum || '')}</div>
+      <div class="day-lbl">${esc(day.label || '')}</div>
+      <div class="day-ttl">${esc(day.title || '')}</div>
+      <div class="day-sub">${esc(day.subtitle || '')}</div>
+    </div>
+    ${trainHtml}
+    ${renderMapBlock(day)}
+    ${renderCultureBox(day.culture)}
+    ${contentHtml}
+  </div>`;
+}
+
+function renderOverview() {
+  const cards = TRIP.days.map(d => `
+    <button class="ov-card" data-day="${esc(d.id)}" aria-label="Voir le programme : ${esc(d.title)}">
+      <div class="ov-num">${esc(d.bgNum)}</div>
+      <div class="ov-lbl">${esc((d.label.split('·')[1] || d.label.split('-')[1] || d.label).trim())}</div>
+      <div class="ov-ttl">${esc(d.title)}</div>
+      <div class="ov-sub">${esc(d.subtitle)}</div>
+    </button>`).join('');
+
+  const bItems = TRIP.budget.map(b =>
+    `<div class="budget__item">
+      <span class="budget__amt">${esc(b.amount)}€</span>
+      <span class="budget__lbl">${esc(b.label)}</span>
+    </div>`).join('');
+
+  return `<div id="overview" class="day-panel">
+    <div class="day-hdr">
+      <div class="day-bgnum">${TRIP.days.length}</div>
+      <div class="day-lbl">Itineraire complet</div>
+      <div class="day-ttl">Notre programme</div>
+      <div class="day-sub">Appuie sur un jour pour explorer</div>
+    </div>
+    <div class="ov-grid">${cards}</div>
+    <div class="budget">
+      <div class="budget__ttl">Budget estime (sans hotel)</div>
+      <div class="budget__grid">${bItems}</div>
+      <div class="budget__note">${esc(TRIP.budgetNote)}</div>
+    </div>
+  </div>`;
+}
+
+/* ── Section PROGRAMME ─────────────────────────────────────────── */
+function renderProgramme() {
+  const chips = [
+    `<button class="chip" data-day="overview" role="tab" aria-selected="false"><span class="chip__dot"></span> Vue d'ensemble</button>`,
+    ...TRIP.days.map(d =>
+      `<button class="chip" data-day="${d.id}" role="tab" aria-selected="false"><span class="chip__dot"></span> ${esc(d.chipLabel)}</button>`)
+  ].join('');
+
+  $('section-programme').innerHTML = `
+    <div class="hero-c">
+      <div class="hero-c__tag">${esc(TRIP.meta.tagline)}</div>
+      <div class="hero-c__title">
+        ${TRIP.meta.title.includes('&')
+          ? `<em>${esc(TRIP.meta.title.split('&')[0].trim())}</em>
+             <span class="hero-c__amp">&</span>
+             <em>${esc(TRIP.meta.title.split('&')[1].trim())}</em>`
+          : `<em>${esc(TRIP.meta.title)}</em>`
+        }
+      </div>
+      <div class="hero-c__sub">${esc(TRIP.meta.subtitle)}</div>
+      <div class="hero-c__stats">
+        <div class="hero-stat"><strong>${TRIP.days.length}</strong><span>Jours</span></div>
+        <div class="hero-stat"><strong>${[...new Set(TRIP.days.map(d=>(d.label.split('·')[1]||'').trim()))].filter(Boolean).length || 2}</strong><span>Villes</span></div>
+        <div class="hero-stat"><strong>&#8734;</strong><span>Souvenirs</span></div>
+      </div>
+    </div>
+    <div class="chips-wrap" role="tablist">${chips}</div>
+    ${renderOverview()}
+    ${TRIP.days.map(renderDayPanel).join('')}`;
+
+  document.querySelectorAll('.chip').forEach(c => {
+    c.addEventListener('click', () => showDay(c.dataset.day));
+  });
+
+  /* Listener délégué ov-card (buttons accessibles au clavier) */
+  $('section-programme').addEventListener('click', e => {
+    const card = e.target.closest('.ov-card[data-day]');
+    if (card) showDay(card.dataset.day);
+  });
+
+  /* Listener délégué pour les story drawers — aucun onclick inline */
+  initStoryListeners($('section-programme'));
+}
+
+/* ── Resto card ────────────────────────────────────────────────── */
+function renderRestoCard(r, i) {
+  /* Meta grid — depuis r.meta[] si present, sinon construit depuis les champs */
+  const metaItems = r.meta || [
+    r.address      ? { label: 'Adresse',     value: r.address } : null,
+    r.price_range  ? { label: 'Prix',        value: r.price_range } : null,
+    r.opening      ? { label: 'Ouvert',      value: r.opening } : null,
+    r.reservation_required != null
+      ? { label: 'Reservation', value: r.reservation_required ? 'Obligatoire ⚠' : 'Libre' }
+      : null,
+  ].filter(Boolean);
+
+  const metaHtml  = metaItems.map(m=>`<div class="mi"><span class="mi__lbl">${esc(m.label)}</span><span class="mi__val">${esc(m.value)}</span></div>`).join('');
+  const tagsHtml  = (r.tags||[]).map(t=>`<span class="tag" style="background:${t.bg};color:${t.color}">${esc(t.text)}</span>`).join('');
+
+  /* Stars */
+  const starsHtml = r.stars ? `
+    <div class="stars-row">${esc(r.stars)} <span>${esc(r.starsNote||'')}</span></div>` : '';
+
+  /* Days badge */
+  const daysBadge = (r.used_on_days||[]).length
+    ? `<div class="rc__days">${r.used_on_days.map(d=>`<span>${esc(d.replace('day','J'))}</span>`).join('')}</div>`
+    : '';
+
+  /* Actions */
+  const actions = [];
+  if (r.maps_url)    actions.push(`<a class="btn-m" href="${safeUrl(r.maps_url)}" target="_blank" rel="noopener noreferrer">📍 Google Maps</a>`);
+  if (r.phone)       actions.push(`<a class="btn-m btn-m--blue" href="${safeUrl('tel:' + r.phone)}">📞 ${esc(r.phone)}</a>`);
+  if (r.booking_url) actions.push(`<a class="btn-r" href="${safeUrl(r.booking_url)}" target="_blank" rel="noopener noreferrer">🍴 Reserver sur TheFork</a>`);
+
+  /* Verdict label */
+  const verdictLabel = r.verdictLabel || 'Notre verdict';
+
+  return `<div class="rc" id="${r.id}">
+    <div class="rc__acc" style="background:${r.accentColor||'var(--brick)'}"></div>
+    <div class="rc__body">
+      <div class="rc__num">0${i+1}</div>
+      <div class="rc__cat" style="color:${r.accentColor||'var(--brick)'}">${esc(r.category)}</div>
+      <div class="rc__name">${esc(r.name)}</div>
+      ${starsHtml}
+      ${daysBadge}
+      <div class="divider"></div>
+      <p class="rc__desc">${esc(r.description)}</p>
+      <div class="meta-grid">${metaHtml}</div>
+      <div class="tag-row">${tagsHtml}</div>
+      <div class="verdict" style="background:${r.verdictBg||'#FFF5F0'};border-left:3px solid ${r.accentColor||'var(--brick)'}">
+        <span class="verdict__lbl" style="color:${r.accentColor||'var(--brick)'}">${esc(verdictLabel)}</span>
+        ${esc(r.verdict||'')}
+      </div>
+      <div class="rc-actions">${actions.join('')}</div>
+    </div>
+  </div>`;
+}
+
+/* ── Section RESTOS ────────────────────────────────────────────── */
+function renderRestos() {
+  const count = TRIP.restos.length;
+  /* Tips: build from restos with reservation_required */
+  const resaNames = TRIP.restos
+    .filter(r => r.reservation_required)
+    .map(r => r.name);
+
+  const TIPS = [
+    resaNames.length
+      ? { ico:'📞', h:'Reserver a l\'avance', t: resaNames.join(' et ') + ' — reserver plusieurs jours avant.' }
+      : { ico:'📞', h:'Reservations', t:'Verifier les disponibilites avant de vous deplacer.' },
+    { ico:'🕐', h:'Timing local', t:'Le dejeuner (12h-14h) est le vrai repas dans le Sud-Ouest. Meilleures formules toujours au dejeuner.' },
+    { ico:'🍷', h:'Le vin local',  t:'Demande un Fronton (cepage Negrette, AOC local) — pas touristique, pas cher, excellent.' },
+    { ico:'💡', h:'L\'astuce',     t:'L\'Air de Famille : menu midi ~28€ pour une experience gastronomique. Meilleur rapport qualite-prix.' },
+  ];
+
+  $('section-restos').innerHTML = `
+    <div class="restos-hdr">
+      <div class="restos-hdr__tag">Guide gastronomique · Toulouse 2026</div>
+      <h1>${count > 1 ? 'Les ' + count + ' adresses' : 'L\'adresse'}<br><em>incontournable${count > 1 ? 's' : ''}</em></h1>
+      <div class="restos-hdr__sub">Validees et testees · Reservations indiquees</div>
+      <div class="badges">
+        <div class="badge">🍽 ${count} adresse${count>1?'s':''}</div>
+        <div class="badge">📍 Toutes dans le centre</div>
+        <div class="badge">❤️ Ideales en amoureux</div>
+      </div>
+    </div>
+    <div class="restos-intro"><p>Adresses choisies pour leur coherence entre sources et leur qualite constante.</p></div>
+    <div class="resto-cards">${TRIP.restos.map((r,i)=>renderRestoCard(r,i)).join('')}</div>
+    <div class="tips-section">
+      <div class="tips-section__ttl">Conseils pratiques</div>
+      <div class="tips-grid">${TIPS.map(t=>`<div class="tip"><div class="tip-ico">${t.ico}</div><h4>${esc(t.h)}</h4><p>${esc(t.t)}</p></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ── Section CARTES ────────────────────────────────────────────── */
+function renderCartes() {
+  const dayLinks = TRIP.days.map((d,i) => ({
+    num:   String(i+1).padStart(2,'0'),
+    label: d.title,
+    sub:   d.mapSub || '',
+    url:   d.mapLink,
+  }));
+  /* Only show hotel card when data is filled */
+  if (TRIP.hotel && TRIP.hotel.name && TRIP.hotel.mapsUrl) {
+    dayLinks.push({ num:'🏨', label:'Notre hotel', sub:TRIP.hotel.name, url:TRIP.hotel.mapsUrl });
+  }
+
+  const links = dayLinks.map(l =>
+    `<a class="map-day-btn" href="${safeUrl(l.url)}" target="_blank" rel="noopener noreferrer">
+      <span class="map-day-btn__n">${esc(l.num)}</span>
+      <div><div class="map-day-btn__l">${esc(l.label)}</div><div class="map-day-btn__s">${esc(l.sub)}</div></div>
+    </a>`).join('');
+
+  $('section-cartes').innerHTML = `
+    <div class="maps-hdr">
+      <div class="maps-hdr__tag">Vue d'ensemble du sejour</div>
+      <h1>Nos <em>cartes</em></h1>
+      <div class="maps-hdr__sub">Toulouse &amp; Carcassonne &mdash; ${TRIP.days.length} jours</div>
+    </div>
+    <div class="map-full">
+      <iframe title="Carte globale"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=1.2000%2C43.1500%2C2.5000%2C43.7500&layer=mapnik"
+        allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="map-links">
+      <div class="map-links__ttl">Itineraires par jour</div>
+      <div class="map-day-grid">${links}</div>
+    </div>`;
+}
+
+/* ── Section PRATIQUE — contextuelle (style SNCF anticipatoire) ── */
+function renderPratique() {
+
+  /* ── Calcul du jour actif (timezone-safe) ─────────────────────── */
+  const [sy, sm, sd] = TRIP.meta.tripStart.split('-').map(Number);
+  const start  = new Date(sy, sm - 1, sd);
+  const today  = new Date();
+  const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const diff   = Math.round((todayMidnight - start) / 86400000);
+  const dayIdx  = (diff >= 0 && diff < TRIP.days.length) ? diff : 0;
+  const day     = TRIP.days[dayIdx];
+  const JOURS   = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const todayLabel = JOURS[today.getDay()] + ' ' + today.getDate();
+
+  /* ── Alertes contextuelles ─────────────────────────────────────── */
+  /* Construites depuis les données TRIP — zéro saisie supplémentaire */
+  const alerts = [];
+
+  /* 1. Train : remonte si J3 (trainBanner) aujourd'hui ou dans 1-2 jours */
+  const trainDayIdx = TRIP.days.findIndex(d => d.trainBanner);
+  if (trainDayIdx !== -1) {
+    const delta = trainDayIdx - dayIdx;
+    if (delta === 0) {
+      const tb = TRIP.days[trainDayIdx].trainBanner;
+      alerts.push({
+        urgency: 'now',
+        icon: '🚆',
+        title: 'Aujourd\'hui : ' + esc(tb.label),
+        body:  esc(tb.info),
+        badge: 'Maintenant',
+        btnLabel: 'Réserver sur SNCF',
+        btnUrl:   'https://www.oui.sncf',
+      });
+    } else if (delta === 1) {
+      const tb = TRIP.days[trainDayIdx].trainBanner;
+      alerts.push({
+        urgency: 'soon',
+        icon: '🚆',
+        title: 'Demain : ' + esc(tb.label),
+        body:  esc(tb.info) + ' · Pense à réserver si ce n\'est pas fait.',
+        badge: 'Demain',
+        btnLabel: 'Réserver sur SNCF',
+        btnUrl:   'https://www.oui.sncf',
+      });
+    } else if (delta === 2) {
+      const tb = TRIP.days[trainDayIdx].trainBanner;
+      alerts.push({
+        urgency: 'upcoming',
+        icon: '🚆',
+        title: 'Dans 2 jours : excursion Carcassonne',
+        body:  esc(tb.info),
+        badge: 'Dans 2 jours',
+        btnLabel: 'Réserver sur SNCF',
+        btnUrl:   'https://www.oui.sncf',
+      });
+    }
+  }
+
+  /* 2. Réservations urgentes : steps reservation_required sur J+1 */
+  const tomorrow = TRIP.days[dayIdx + 1];
+  if (tomorrow && tomorrow.steps) {
+    tomorrow.steps.filter(s => s.reservation_required).forEach(s => {
+      const p = s.practical || {};
+      alerts.push({
+        urgency: 'soon',
+        icon: '🍽',
+        title: 'Demain : ' + esc(s.name),
+        body:  (p.opening ? esc(p.opening) : '') + ' · Complet rapidement.',
+        badge: 'Réserver maintenant',
+        btnLabel: 'Réserver',
+        btnUrl:   p.booking_url || null,
+      });
+    });
+  }
+
+  /* 3. Réservations urgentes sur le jour actif non encore passées */
+  if (day && day.steps) {
+    const nowH = today.getHours() * 60 + today.getMinutes();
+    day.steps.filter(s => s.reservation_required).forEach(s => {
+      const stepH = s.time ? (parseInt(s.time.split(':')[0]) * 60 + parseInt(s.time.split(':')[1])) : 9999;
+      if (stepH > nowH) {
+        const p = s.practical || {};
+        alerts.push({
+          urgency: 'now',
+          icon: '🍽',
+          title: 'Ce soir : ' + esc(s.name),
+          body:  p.opening ? esc(p.opening) : '',
+          badge: 'Ce soir',
+          btnLabel: 'Réserver',
+          btnUrl:   p.booking_url || null,
+        });
+      }
+    });
+  }
+
+  /* ── Render alertes ────────────────────────────────────────────── */
+  const URGENCY_STYLE = {
+    now:      { border: 'var(--brick)',     bg: 'var(--peche)',  badgeBg: 'var(--brick)',     badgeColor: '#fff' },
+    soon:     { border: 'var(--gold)',      bg: 'var(--sable)',  badgeBg: 'var(--gold)',      badgeColor: '#fff' },
+    upcoming: { border: 'var(--transport)', bg: 'var(--ciel)',   badgeBg: 'var(--transport)', badgeColor: '#fff' },
+  };
+
+  const alertsHtml = alerts.map(a => {
+    const s = URGENCY_STYLE[a.urgency] || URGENCY_STYLE.upcoming;
+    const btn = a.btnUrl
+      ? `<a class="prat-alert__btn" href="${safeUrl(a.btnUrl)}" target="_blank" rel="noopener noreferrer">${esc(a.btnLabel)} →</a>`
+      : '';
+    return `<div class="prat-alert" style="border-left-color:${s.border};background:${s.bg}">
+      <div class="prat-alert__top">
+        <span class="prat-alert__ico">${a.icon}</span>
+        <span class="prat-alert__badge" style="background:${s.badgeBg};color:${s.badgeColor}">${esc(a.badge)}</span>
+      </div>
+      <div class="prat-alert__title">${a.title}</div>
+      ${a.body ? `<div class="prat-alert__body">${a.body}</div>` : ''}
+      ${btn}
+    </div>`;
+  }).join('');
+
+  /* ── Hotel card ────────────────────────────────────────────────── */
+  const hotelHtml = (TRIP.hotel && TRIP.hotel.name) ? `
+    <div class="prat-row prat-row--hotel">
+      <span class="prat-row__ico">🏨</span>
+      <div class="prat-row__body">
+        <div class="prat-row__title">${esc(TRIP.hotel.name)}</div>
+        <div class="prat-row__sub">
+          ${TRIP.hotel.address ? esc(TRIP.hotel.address) + '&nbsp;' : ''}
+          ${TRIP.hotel.checkin ? '· Check-in ' + esc(TRIP.hotel.checkin) : ''}
+        </div>
+      </div>
+      <div class="prat-row__actions">
+        ${TRIP.hotel.mapsUrl ? `<a class="prat-row__btn" href="${safeUrl(TRIP.hotel.mapsUrl)}" target="_blank">📍</a>` : ''}
+        ${TRIP.hotel.phone   ? `<a class="prat-row__btn" href="${safeUrl('tel:' + TRIP.hotel.phone)}">📞</a>` : ''}
+      </div>
+    </div>` : `
+    <div class="prat-row prat-row--hotel prat-row--empty">
+      <span class="prat-row__ico">🏨</span>
+      <div class="prat-row__body">
+        <div class="prat-row__title">Hotel</div>
+        <div class="prat-row__sub" style="font-style:italic">A renseigner dans BLOC 1 → hotel{}</div>
+      </div>
+    </div>`;
+
+  /* ── Infos permanentes : 3 niveaux ────────────────────────────── */
+  /* Icônes SVG Lucide en --text-muted : neutres, informationnelles,
+     ne concurrencent pas les éléments interactifs en --brick         */
+  const ALWAYS = [
+    { ico: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8.5" cy="17" r="1.5"/><circle cx="15.5" cy="17" r="1.5"/><path d="m9 21-1-4"/><path d="m15 21 1-4"/></svg>`, text: 'Metro A+B · 1,80€/ticket · Bus · VeloToulouse partout en libre-service' },
+    { ico: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><line x1="12" y1="10" x2="12" y2="14"/></svg>`, text: 'Centre historique entierement pieton — meilleur mode de decouverte' },
+    { ico: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6.29 6.29l.98-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`, text: 'SAMU 15 · Police 17 · Pompiers 18 · Europeen 112' },
+    { ico: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`, text: 'Budget repas : petit-dej ~15€/j · dej ~50-70€ · diner leger ~25-30€ · max 100€/j pour 2' },
+  ];
+
+  /* Niveau 2 : En cas de besoin — icônes SVG Lucide en --text-muted
+     Souvenirs : fleur (violette de Toulouse) ≠ sac shopping (step actif) */
+  const NEED = [
+    { ico: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><line x1="9" y1="2" x2="9" y2="22"/></svg>`, text: 'Pass Musees Toulouse Metropole ~25€ — acces musees municipaux, rentable des 3 visites — office de tourisme' },
+    { ico: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`, text: 'Printemps ideal · veste legere le soir · risque d\'averse en avril · creme solaire' },
+    { ico: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`, text: 'SNCF Connect (trains) · VeloToulouse (velos) · Citymapper (transports) · TheFork (restos)' },
+    /* Fleur SVG = violette de Toulouse — icône distincte du sac shopping */
+    { ico: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2 Q14 7 12 10"/><path d="M12 2 Q10 7 12 10"/><path d="M22 12 Q17 14 14 12"/><path d="M22 12 Q17 10 14 12"/><path d="M12 22 Q14 17 12 14"/><path d="M12 22 Q10 17 12 14"/><path d="M2 12 Q7 14 10 12"/><path d="M2 12 Q7 10 10 12"/></svg>`, text: 'Violettes de Toulouse (bonbons, liqueur, parfum) · saucisson sec · cassoulet en bocal · vin de Fronton · gimblettes' },
+  ];
+
+  const alwaysHtml = ALWAYS.map(i =>
+    `<div class="prat-line"><span class="prat-line__ico">${i.ico}</span><span>${esc(i.text)}</span></div>`
+  ).join('');
+
+  const needHtml = NEED.map(i =>
+    `<div class="prat-line prat-line--muted"><span class="prat-line__ico">${i.ico}</span><span>${esc(i.text)}</span></div>`
+  ).join('');
+
+  /* ── Liens utiles ──────────────────────────────────────────────── */
+  const linksHtml = (TRIP.usefulLinks||[]).map(l=>
+    `<a class="useful-link" href="${safeUrl(l.url)}" target="_blank" rel="noopener noreferrer">
+       <span>${esc(l.label)}</span><span class="useful-link__arr">↗</span>
+     </a>`).join('');
+
+  /* ── Photos album ──────────────────────────────────────────────── */
+  const photosHtml = TRIP.meta.googlePhotosUrl ? `
+    <div class="photos-ban" style="margin:0 13px 13px"><div class="photos-ban__in">
+      <div class="photos-ban__ico">📸</div>
+      <div><div class="photos-ban__lbl">Album souvenir</div>
+           <div class="photos-ban__sub">Photos &amp; videos du sejour</div></div>
+      <a class="photos-ban__btn" href="${safeUrl(TRIP.meta.googlePhotosUrl)}" target="_blank" rel="noopener noreferrer">Ouvrir &rarr;</a>
+    </div></div>` : '';
+
+  /* ── Assemblage final ──────────────────────────────────────────── */
+  $('section-pratique').innerHTML = `
+    <div class="prat-hdr">
+      <div class="prat-hdr__tag">Aujourd'hui · ${esc(todayLabel)}</div>
+      <h1>Infos pratiques</h1>
+    </div>
+
+    ${photosHtml}
+
+    ${alertsHtml ? `<div class="prat-alerts">${alertsHtml}</div>` : ''}
+
+    <div class="prat-section">
+      ${hotelHtml}
+    </div>
+
+    <div class="prat-section">
+      <div class="prat-section__ttl">Toujours utile</div>
+      ${alwaysHtml}
+    </div>
+
+    <div class="prat-section">
+      <div class="prat-section__ttl">En cas de besoin</div>
+      ${needHtml}
+    </div>
+
+    ${linksHtml ? `<div class="prat-section">
+      <div class="prat-section__ttl">Liens utiles</div>
+      <div style="display:flex;flex-direction:column;gap:7px">${linksHtml}</div>
+    </div>` : ''}`;
+}
+
+/* ── Auto-select today ─────────────────────────────────────────── */
+function autoSelectDay() {
+  /* Calcul timezone-safe : compare les dates en heure locale */
+  const [sy, sm, sd] = TRIP.meta.tripStart.split('-').map(Number);
+  const start = new Date(sy, sm - 1, sd);          /* minuit heure locale */
+  const now   = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diff  = Math.round((today - start) / 86400000);
+  if (diff >= 0 && diff < TRIP.days.length) {
+    showDay(TRIP.days[diff].id);
+  } else {
+    showDay(TRIP.days[0].id);
+  }
+}
+
+/* ── Boot ──────────────────────────────────────────────────────── */
+(function init() {
+  try {
+    /* Update meta tags from TRIP data — single source of truth */
+    const emoji = TRIP.meta.coverEmoji || '✈';
+    document.getElementById('page-title').textContent      = TRIP.meta.title + ' — Notre Voyage ' + emoji;
+    document.getElementById('meta-og-title').content       = TRIP.meta.title + ' — Notre Voyage ' + emoji;
+    document.getElementById('meta-description').content    = TRIP.meta.subtitle + ' · ' + TRIP.days.length + ' jours';
+    document.getElementById('meta-og-description').content = TRIP.meta.subtitle + ' · ' + TRIP.days.length + ' jours';
+    document.getElementById('meta-og-url').content         = location.href;
+    document.getElementById('page-icon').href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>${emoji}</text></svg>`;
+
+    renderProgramme();
+    renderRestos();
+    renderCartes();
+    renderPratique();
+    initNav();
+    autoSelectDay();
+  } catch (err) {
+    console.error('[Voyage] Erreur au démarrage :', err);
+    document.body.innerHTML = `<div style="font-family:sans-serif;padding:32px;text-align:center;color:#C2410C">
+      <div style="font-size:40px;margin-bottom:16px">⚠️</div>
+      <strong>Impossible de charger le guide.</strong><br>
+      <span style="font-size:13px;color:#888;margin-top:8px;display:block">
+        Vérifiez la syntaxe du BLOC 1 (TRIP_DATA) — virgule ou accolade manquante ?
+      </span>
+    </div>`;
+  }
+})();
+</script>
+<!-- === FIN BLOC LOGIQUE === -->
+
+</body>
+</html>
